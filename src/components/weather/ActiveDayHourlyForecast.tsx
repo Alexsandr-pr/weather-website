@@ -80,7 +80,7 @@ export function ActiveDayHourlyForecast({
 
     return (
         <div className="w-full flex gap-6">
-            <div className="flex w-[200px] shrink-0 flex-col rounded-xl self-stretch">
+            <div className="flex w-[200px] min-h-[400px] shrink-0 flex-col rounded-xl self-stretch">
                 {nowHour ? (
                     <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center text-slate-900">
                         <p className="text-sm font-semibold tabular-nums text-slate-700">
@@ -276,7 +276,7 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Qualite de l'air (AQI)
+                                Qualite de l&apos;air (AQI)
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td

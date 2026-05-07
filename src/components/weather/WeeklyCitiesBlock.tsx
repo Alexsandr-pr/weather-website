@@ -11,7 +11,7 @@ export function WeeklyCitiesBlock({ cities, country }: WeeklyCitiesBlockProps) {
     <section className="mx-auto mt-6 w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
      
         <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">
-          Meteo de la semaine dans d'autres villes d'{country}
+          Meteo de la semaine dans d&apos;autres villes d&apos;{country}
         </h2>
         <div className="mt-4 flex flex-wrap gap-2.5">
           {cities.map((city) => (
