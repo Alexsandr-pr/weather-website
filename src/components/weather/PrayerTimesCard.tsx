@@ -12,7 +12,7 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
     const nextPrayer = prayers.find((p) => p.isNext);
 
     return (
-        <section className="rounded-xl border border-slate-100 bg-white p-4 shadow-[0_0_7px_0_rgba(0,0,0,.27)] sm:p-6">
+        <section className="md:rounded-xl md:border md:border-slate-100 bg-white p-4 md:p-6 shadow-[0_0_7px_0_rgba(0,0,0,.27)]">
             <div className="mb-4 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                     
@@ -61,7 +61,7 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
                 ))}
             </ul>
 
-            <div className="mt-3 max-w-[320px] flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-4 py-1.5">
+            <div className="mt-3 max-w-full sm:max-w-[320px] flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-4 py-1.5">
                 <div className="flex items-center gap-2 text-slate-700">
                     <SunriseIcon className="h-7 w-7 text-amber-500" />
                     <span className="text-sm font-medium">Lever du soleil</span>

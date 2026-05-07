@@ -34,9 +34,9 @@ export function WeatherHero({
     return (
         <section
             aria-labelledby="weather-hero-title"
-            className="relative overflow-hidden text-slate-900 mb-6"
+            className="relative overflow-hidden text-slate-900 mb-6 px-4 md:px-0"
         >
-            <div className="relative flex flex-col gap-4 sm:flex-row items-end sm:justify-between sm:gap-6">
+            <div className="relative flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
                 <div className="min-w-0">
                     <h1
                         id="weather-hero-title"
@@ -49,7 +49,7 @@ export function WeatherHero({
                     </p>
                 </div>
 
-                <div className="">
+                <div className="hidden lg:block">
                     <div
                         role="tablist"
                         aria-label="Periode de prevision"

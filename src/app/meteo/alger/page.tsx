@@ -21,8 +21,8 @@ export default function AlgerMeteoPage() {
         <div className="flex min-h-screen flex-col">
             <Header />
 
-            <main className="mx-auto w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-8 ">
-                <div className="grid gap-6 lg:grid-cols-1 lg:gap-8">
+            <main className="mx-auto w-full max-w-7xl flex-1 px-0 md:px-6 lg:px-8 ">
+                <div className="grid gap-6 grid-cols-1 gap-12">
                     <MeteoCityView data={data} formattedDate={formattedDate} />
                     <PrayerTimesCard
                         prayers={data.prayers}
@@ -32,8 +32,10 @@ export default function AlgerMeteoPage() {
                 </div>
 
             </main>
+            <div className="grid grid-cols-1 gap-12 mt-12">
             <WeeklyCitiesBlock cities={data.nearby} country={data.city.country} />
             <CountrySeoBlock country={data.city.country} siteName="imeteoalgerie.com" />
+            </div>
             <Footer />
         </div>
     );

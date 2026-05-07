@@ -76,11 +76,11 @@ export function ActiveDayHourlyForecast({
         idx === nowIndex ? "!bg-blue-200 text-blue-950" : "";
     const nowDataCellCls = (idx: number) =>
         idx === nowIndex ? "!bg-blue-100 text-blue-900" : "";
-    const hourColCls = "w-[64px] min-w-[64px] max-w-[64px]";
+    const hourColCls = "md:w-[64px] w-[56px] md:min-w-[64px] min-w-[56px] md:max-w-[64px] max-w-[56px]";
 
     return (
         <div className="w-full flex gap-6">
-            <div className="flex w-[200px] min-h-[400px] shrink-0 flex-col rounded-xl self-stretch">
+            <div className="hidden lg:flex w-[200px] min-h-[400px] shrink-0 flex-col rounded-xl self-stretch">
                 {nowHour ? (
                     <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center text-slate-900">
                         <p className="text-sm font-semibold tabular-nums text-slate-700">
@@ -139,7 +139,7 @@ export function ActiveDayHourlyForecast({
                 </div>
             </div>
             <div className="flex-1 overflow-x-auto">
-                <table className="min-w-full border-separate border-spacing-0 text-center text-xs">
+                <table className="min-w-full border-separate border-spacing-0 text-center text-[11px] md:text-xs">
                     <thead>
                         <tr>
                             <th className="sticky left-0 z-10 bg-white px-3 py-2" />
@@ -147,7 +147,7 @@ export function ActiveDayHourlyForecast({
                                 <th
                                     key={`part-${idx}`}
                                     colSpan={group.count}
-                                    className={`whitespace-nowrap border-b border-slate-100 px-3 py-2 text-center text-sm font-semibold text-slate-700 ${idx > 0 ? "border-l border-slate-200" : ""}`}
+                                    className={`whitespace-nowrap px-3 h-9 py-1 text-center text-sm font-semibold text-slate-700 ${idx > 0 ? "border-l border-slate-200" : ""}`}
                                 >
                                     {group.label}
                                 </th>
@@ -169,7 +169,7 @@ export function ActiveDayHourlyForecast({
                             {selectedHourly.map((hour, idx) => (
                                 <th
                                     key={`icon-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap border-b border-slate-100 px-3 py-1 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap px-3 py-1 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     <WeatherConditionIcon
                                         condition={hour.condition}
@@ -183,12 +183,12 @@ export function ActiveDayHourlyForecast({
                     <tbody>
                         <tr>
                             <TdLeft>
-                                Temperature, degC
+                                Temperature, <br className="block lg:hidden"/>°C
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`temp-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap border-b text-lg border-slate-100 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap text-sm md:text-lg h-8 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     {hour.temperature > 0 ? "+" : ""}
                                     {hour.temperature}°
@@ -202,7 +202,7 @@ export function ActiveDayHourlyForecast({
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`feel-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap border-b border-slate-100 px-3 py-2 font-medium text-slate-500 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap h-8 py-1.5 font-medium text-slate-500 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     {hour.temperature >= 0 ? "+" : ""}
                                     {hour.temperature + (baseFeelsLike - selectedHourly[0].temperature)}°
@@ -216,7 +216,7 @@ export function ActiveDayHourlyForecast({
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`pressure-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap bg-slate-50 border-b border-slate-100 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap bg-slate-50 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     {Math.round(basePressure * 0.750062)}
                                 </td>
@@ -229,7 +229,7 @@ export function ActiveDayHourlyForecast({
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`humidity-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap border-b border-slate-100 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     {Math.max(0, Math.min(100, baseHumidity + Math.round((hour.precipitation - 20) / 4)))}
                                 </td>
@@ -242,7 +242,7 @@ export function ActiveDayHourlyForecast({
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`uv-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap border-b border-slate-100 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap bg-slate-50 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     {Math.max(0, Math.round(uvIndex - Math.abs(12 - hour.hour) / 3))}
                                 </td>
@@ -255,10 +255,10 @@ export function ActiveDayHourlyForecast({
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`wind-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap bg-slate-50 border-b border-slate-100 px-2 py-1 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap h-8 py-0.5 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     <div className="flex items-center gap-1 leading-tight">
-                                        <span className="grid h-5 w-5 place-items-center rounded-full bg-white shadow-sm">
+                                        <span className="grid min-w-5 min-h-5 w-5 place-items-center rounded-full bg-white shadow-sm">
                                             <svg
                                                 viewBox="0 0 16 16"
                                                 className="h-3.5 w-3.5 text-slate-600"
@@ -276,12 +276,12 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Qualite de l&apos;air (AQI)
+                                Qualite de l&apos;air <br className="block lg:hidden"/>(AQI)
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`aqi-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap bg-slate-50 border-b border-slate-100 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap bg-slate-50  px-2 md:px-3 py md:py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
                                     {Math.max(1, Math.round(baseAqi + (hour.precipitation - 20) / 10))}
                                 </td>
@@ -289,14 +289,14 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Probabilite de precipitations, %
+                                Probabilite de <br className="block lg:hidden"/>precipitations, %
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
                                     key={`precip-${hour.hour}-${idx}`}
-                                    className={`whitespace-nowrap border-b border-slate-100 px-3 py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
+                                    className={`whitespace-nowrap h-8 py-0.5 md:py-2 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
-                                    {hour.precipitation}
+                                    {hour.precipitation == 0 ? "-" : hour.precipitation}
                                 </td>
                             ))}
                         </tr>
@@ -310,7 +310,7 @@ export function ActiveDayHourlyForecast({
 
 const TdLeft = ({ children }: { children: React.ReactNode }) => {
     return (
-        <td className="sticky left-0 whitespace-nowrap text-right z-10 bg-white px-3 py-2 text-center font-semibold text-slate-500">
+        <td className="sticky left-0 whitespace-nowrap text-right z-10 bg-white px-2 md:px-2 py-0 md:py-2 text-center font-semibold text-slate-500">
             {children}
         </td>
     );
