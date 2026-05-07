@@ -42,10 +42,10 @@ export function ActiveDayHourlyForecast({
     const isNightHour = (hour: number) => hour < sunriseHour || hour >= sunsetHour;
 
     const getPartOfDay = (hour: number): string => {
-        if (hour < 6) return "Ночь";
-        if (hour < 12) return "Утро";
-        if (hour < 18) return "День";
-        return "Вечер";
+        if (hour < 6) return "Nuit";
+        if (hour < 12) return "Matin";
+        if (hour < 18) return "Jour";
+        return "Soir";
     };
 
     const partOfDayGroups: { label: string; count: number }[] = [];
@@ -80,7 +80,7 @@ export function ActiveDayHourlyForecast({
 
     return (
         <div className="w-full flex gap-6">
-            <div className="w-[200px] shrink-0 rounded-xl">
+            <div className="flex w-[200px] shrink-0 flex-col rounded-xl self-stretch">
                 {nowHour ? (
                     <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center text-slate-900">
                         <p className="text-sm font-semibold tabular-nums text-slate-700">
@@ -113,27 +113,28 @@ export function ActiveDayHourlyForecast({
                         </p>
                     </div>
                 )}
-                
-                <div className="mt-3 border-t border-slate-100 pt-3 text-sm">
-                    <p className="text-slate-600 grid grid-cols-2">
-                        Восход
-                        <span className="ml-1 font-medium text-slate-900 text-right tabular-nums">{sunrise}</span>
-                    </p>
-                    <p className="mt-1 text-slate-600 grid grid-cols-2">
-                        Закат
-                        <span className="ml-1 font-medium text-slate-900 text-right tabular-nums">{sunset}</span>
-                    </p>
-                </div>
+                <div className="mt-auto">
+                    <div className="mt-3 border-t border-slate-100 pt-3 text-sm">
+                        <p className="text-slate-600 grid grid-cols-2">
+                            Lever
+                            <span className="ml-1 font-medium text-slate-900 text-right tabular-nums">{sunrise}</span>
+                        </p>
+                        <p className="mt-1 text-slate-600 grid grid-cols-2">
+                            Coucher
+                            <span className="ml-1 font-medium text-slate-900 text-right tabular-nums">{sunset}</span>
+                        </p>
+                    </div>
 
-                <div className="mt-3 flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
-                    <MoonPhaseIcon phase={moonPhase} className="h-9 w-9 shrink-0" />
-                    <div className="leading-tight">
-                        <p className="text-[10px] uppercase tracking-wide text-slate-500">
-                            Фаза луны
-                        </p>
-                        <p className="text-sm font-semibold text-slate-900">
-                            {moonPhaseLabel}
-                        </p>
+                    <div className="mt-3 flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                        <MoonPhaseIcon phase={moonPhase} className="h-9 w-9 shrink-0" />
+                        <div className="leading-tight">
+                            <p className="text-[10px] uppercase tracking-wide text-slate-500">
+                                Phase lunaire
+                            </p>
+                            <p className="text-sm font-semibold text-slate-900">
+                                {moonPhaseLabel}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -182,7 +183,7 @@ export function ActiveDayHourlyForecast({
                     <tbody>
                         <tr>
                             <TdLeft>
-                                Температура, °C
+                                Temperature, degC
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
@@ -196,7 +197,7 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Чувствуется как
+                                Ressenti
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
@@ -210,7 +211,7 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Давление, мм
+                                Pression, mm
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
@@ -223,7 +224,7 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Влажность, %
+                                Humidite, %
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
@@ -249,7 +250,7 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Ветер, м/с
+                                Vent, m/s
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
@@ -275,7 +276,7 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Качество воздуха (AQI)
+                                Qualite de l'air (AQI)
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
@@ -288,7 +289,7 @@ export function ActiveDayHourlyForecast({
                         </tr>
                         <tr>
                             <TdLeft>
-                                Вероятность осадков, %
+                                Probabilite de precipitations, %
                             </TdLeft>
                             {selectedHourly.map((hour, idx) => (
                                 <td
@@ -309,7 +310,7 @@ export function ActiveDayHourlyForecast({
 
 const TdLeft = ({ children }: { children: React.ReactNode }) => {
     return (
-        <td className="sticky  left-0 whitespace-nowrap text-right z-10 bg-white px-3 py-2 text-center font-semibold text-slate-500">
+        <td className="sticky left-0 whitespace-nowrap text-right z-10 bg-white px-3 py-2 text-center font-semibold text-slate-500">
             {children}
         </td>
     );

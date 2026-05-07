@@ -41,7 +41,7 @@ export function DailyForecast({
         <section>
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-base font-semibold text-slate-900 sm:text-lg">
-                    Прогноз на {items.length} дней
+                    Prevision sur {items.length} jours
                 </h2>
             </div>
 
@@ -87,7 +87,7 @@ export function DailyForecast({
                                     <div className="flex items-center gap-3 leading-none">
                                         <div className="flex flex-col items-center">
                                             <span className="text-[11px] font-normal uppercase tracking-wide text-slate-500">
-                                                мин.
+                                                min.
                                             </span>
                                             <span className="text-lg font-medium text-slate-900">
                                                 {day.low > 0 ? "+" : ""}
@@ -96,7 +96,7 @@ export function DailyForecast({
                                         </div>
                                         <div className="flex flex-col items-center">
                                             <span className="text-[11px] font-normal uppercase tracking-wide text-slate-500">
-                                                макс.
+                                                max.
                                             </span>
                                             <span className="text-lg font-medium text-slate-900">
                                                 {day.high > 0 ? "+" : ""}
@@ -111,7 +111,7 @@ export function DailyForecast({
                 </ul>
             </div>
 
-            <div className="relative z-10  rounded-xl border  border-slate-200 bg-white p-3 shadow-[0_0_7px_0_rgba(0,0,0,.27)]">
+            <div className="relative z-10 rounded-xl border  border-slate-200 bg-white p-3 shadow-[0_0_7px_0_rgba(0,0,0,.27)]">
                 <ActiveDayHourlyForecast
                     cityName={cityName}
                     dayName={activeDay.dayName}

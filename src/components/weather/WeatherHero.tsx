@@ -42,7 +42,7 @@ export function WeatherHero({
                         id="weather-hero-title"
                         className="text-2xl font-semibold tracking-tight sm:text-3xl"
                     >
-                        <span className="text-slate-500">Погода в</span> {heroName}
+                        <span className="text-slate-500">Meteo a</span> {heroName}
                     </h1>
                     <p className="mt-2 text-sm leading-relaxed text-slate-500 sm:text-base">
                         {addressLine}
@@ -52,7 +52,7 @@ export function WeatherHero({
                 <div className="">
                     <div
                         role="tablist"
-                        aria-label="Период прогноза"
+                        aria-label="Periode de prevision"
                         className="inline-flex shrink-0 items-end gap-1 self-end rounded-full bg-blue-200 p-1 backdrop-blur"
                     >
                         {RANGES.map((range) => {
@@ -69,7 +69,7 @@ export function WeatherHero({
                                             : "text-slate-900"
                                         }`}
                                 >
-                                    {range} дней
+                                    {range} jours
                                 </button>
                             );
                         })}

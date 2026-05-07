@@ -8,7 +8,7 @@ interface PrayerTimesCardProps {
 }
 
 export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps) {
-    const mainPrayers = prayers.filter((p) => p.name !== "Восход");
+    const mainPrayers = prayers.filter((p) => p.name !== "Lever du soleil");
     const nextPrayer = prayers.find((p) => p.isNext);
 
     return (
@@ -20,7 +20,7 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
                    
                     <div className="leading-tight">
                         <h2 className="text-base font-semibold text-slate-900 sm:text-lg">
-                            Время намаза
+                            Horaires de prieres
                         </h2>
                         <p className="text-xs text-slate-500">
                             {city.name}, {city.country}
@@ -30,7 +30,7 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
                 {nextPrayer && (
                     <div className="text-right">
                         <p className="text-[10px] mb-2 uppercase tracking-wide leading-none text-blue-600">
-                            Следующий
+                            Suivante
                         </p>
                         <p className="mt-0.5 text-xs font-semibold leading-none text-blue-900 tabular-nums">
                             {nextPrayer.name} · {nextPrayer.time}
@@ -64,7 +64,7 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
             <div className="mt-3 max-w-[320px] flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-4 py-1.5">
                 <div className="flex items-center gap-2 text-slate-700">
                     <SunriseIcon className="h-7 w-7 text-amber-500" />
-                    <span className="text-sm font-medium">Восход солнца</span>
+                    <span className="text-sm font-medium">Lever du soleil</span>
                 </div>
                 <span className="text-sm font-semibold tabular-nums text-slate-900">
                     {sunrise}

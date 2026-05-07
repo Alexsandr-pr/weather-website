@@ -5,7 +5,7 @@ import { MeteoCityView } from "@/components/weather/MeteoCityView";
 import { CountrySeoBlock } from "@/components/weather/CountrySeoBlock";
 import { WeeklyCitiesBlock } from "@/components/weather/WeeklyCitiesBlock";
 import { PrayerTimesCard } from "@/components/weather/PrayerTimesCard";
-import { formatRussianDate, getCityWeather } from "@/data/mockWeather";
+import { formatFrenchDate, getCityWeather } from "@/data/mockWeather";
 
 const CITY_SLUG = "alger";
 
@@ -15,7 +15,7 @@ export default function AlgerMeteoPage() {
         notFound();
     }
 
-    const formattedDate = formatRussianDate(new Date());
+    const formattedDate = formatFrenchDate(new Date());
 
     return (
         <div className="flex min-h-screen flex-col">
