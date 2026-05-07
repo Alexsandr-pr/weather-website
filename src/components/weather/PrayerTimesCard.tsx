@@ -12,10 +12,12 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
     const nextPrayer = prayers.find((p) => p.isNext);
 
     return (
-        <section className="rounded-xl border border-slate-100 bg-white p-3 shadow-[0_0_7px_0_rgba(0,0,0,.27)] sm:p-4 lg:p-6">
+        <section className="rounded-2xl border border-slate-100 bg-white p-3 shadow-[0_0_7px_0_rgba(0,0,0,.27)] sm:p-4 lg:rounded-xl lg:p-6">
             <div className="mb-3 flex items-start justify-between gap-3 sm:mb-4 sm:items-center">
                 <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-                    <MosqueIcon className="h-8 w-8 shrink-0 sm:h-10 sm:w-10" />
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-600 sm:h-11 sm:w-11">
+                        <MosqueIcon className="h-6 w-6 sm:h-7 sm:w-7" />
+                    </div>
                     <div className="min-w-0 leading-tight">
                         <h2 className="truncate text-sm font-semibold text-slate-900 sm:text-base lg:text-lg">
                             Horaires de prieres
@@ -26,11 +28,11 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
                     </div>
                 </div>
                 {nextPrayer && (
-                    <div className="shrink-0 text-right">
-                        <p className="mb-1 text-[10px] uppercase leading-none tracking-wide text-blue-600 sm:mb-2">
+                    <div className="shrink-0 rounded-full bg-blue-50 px-3 py-1.5 text-right">
+                        <p className="text-[9px] font-semibold uppercase leading-none tracking-wide text-blue-600 sm:text-[10px]">
                             Suivante
                         </p>
-                        <p className="text-[11px] font-semibold leading-none tabular-nums text-blue-900 sm:text-xs">
+                        <p className="mt-1 text-[11px] font-semibold leading-none tabular-nums text-blue-900 sm:text-xs">
                             {nextPrayer.name} · {nextPrayer.time}
                         </p>
                     </div>
@@ -41,13 +43,13 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
                 {mainPrayers.map((prayer) => (
                     <li
                         key={prayer.name}
-                        className={`flex flex-col items-center gap-1 rounded-lg border px-2 py-2.5 text-center transition sm:px-3 sm:py-3 ${prayer.isNext
-                            ? "relative z-10 scale-105 border-transparent text-blue-900 shadow-[0_0_7px_0_rgba(0,0,0,.27)]"
+                        className={`flex flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-center transition sm:px-3 sm:py-3 ${prayer.isNext
+                            ? "relative z-10 border-transparent bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-md"
                             : "border-slate-100 bg-white text-slate-700"
                             }`}
                     >
                         <span
-                            className={`text-[10px] font-medium uppercase tracking-wide sm:text-[11px] ${prayer.isNext ? "text-blue-700" : "text-slate-500"
+                            className={`text-[10px] font-medium uppercase tracking-wide sm:text-[11px] ${prayer.isNext ? "text-white/90" : "text-slate-500"
                                 }`}
                         >
                             {prayer.name}
@@ -59,7 +61,7 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
                 ))}
             </ul>
 
-            <div className="mt-3 flex w-full items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-1.5 sm:max-w-[320px] sm:px-4">
+            <div className="mt-3 flex w-full items-center justify-between rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2 sm:max-w-[320px] sm:px-4">
                 <div className="flex items-center gap-2 text-slate-700">
                     <SunriseIcon className="h-6 w-6 text-amber-500 sm:h-7 sm:w-7" />
                     <span className="text-xs font-medium sm:text-sm">Lever du soleil</span>
