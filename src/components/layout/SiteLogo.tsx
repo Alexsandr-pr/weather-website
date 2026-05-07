@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { PartlyCloudyIcon } from "@/components/icons/WeatherIcons";
 import Image from "next/image";
 
 export function SiteLogo() {
@@ -13,7 +12,8 @@ export function SiteLogo() {
         alt="imeteoalgerie.com"
         width={260}
         height={70}
-       
+        className="h-9 w-auto sm:h-12 lg:h-[60px]"
+        priority
       />
     </Link>
   );

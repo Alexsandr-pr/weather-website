@@ -76,69 +76,76 @@ export function ActiveDayHourlyForecast({
         idx === nowIndex ? "!bg-blue-200 text-blue-950" : "";
     const nowDataCellCls = (idx: number) =>
         idx === nowIndex ? "!bg-blue-100 text-blue-900" : "";
-    const hourColCls = "md:w-[64px] w-[56px] md:min-w-[64px] min-w-[56px] md:max-w-[64px] max-w-[56px]";
+    const hourColCls = "w-[56px] min-w-[56px] max-w-[56px] md:w-[64px] md:min-w-[64px] md:max-w-[64px]";
 
     return (
-        <div className="w-full flex gap-6">
-            <div className="hidden lg:flex w-[200px] min-h-[400px] shrink-0 flex-col rounded-xl self-stretch">
-                {nowHour ? (
-                    <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center text-slate-900">
-                        <p className="text-sm font-semibold tabular-nums text-slate-700">
-                            {cityName}: {nowHour.time}
-                        </p>
-                        <div className="flex w-full items-center justify-center">
-                            <ThermometerIcon
-                                temperature={nowHour.temperature}
-                                className="h-24 w-12 shrink-0"
-                            />
-                            <WeatherConditionIcon
-                                condition={nowHour.condition}
-                                isNight={isNightHour(nowHour.hour)}
-                                className="h-36 w-36"
-                            />
+        <div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-6">
+            <aside className="flex w-full shrink-0 flex-col gap-3 lg:min-h-[400px] lg:w-[200px] lg:gap-0 lg:self-stretch">
+                <div className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 lg:flex-col lg:gap-2 lg:border-0 lg:bg-transparent lg:p-0 lg:pt-2 lg:pb-4 lg:text-center">
+                    {nowHour ? (
+                        <>
+                            <div className="flex shrink-0 items-center lg:w-full lg:justify-center">
+                                <ThermometerIcon
+                                    temperature={nowHour.temperature}
+                                    className="h-16 w-8 shrink-0 lg:h-24 lg:w-12"
+                                />
+                                <WeatherConditionIcon
+                                    condition={nowHour.condition}
+                                    isNight={isNightHour(nowHour.hour)}
+                                    className="h-20 w-20 lg:h-36 lg:w-36"
+                                />
+                            </div>
+                            <div className="min-w-0 flex-1 lg:flex-none">
+                                <p className="text-xs font-semibold tabular-nums text-slate-700 lg:text-sm">
+                                    {cityName}: {nowHour.time}
+                                </p>
+                                <p className="mt-1 text-2xl font-bold tabular-nums text-slate-900 lg:mt-0 lg:text-3xl">
+                                    {nowHour.temperature > 0 ? "+" : ""}
+                                    {nowHour.temperature}°C
+                                </p>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex flex-1 flex-col items-start leading-tight lg:flex-none lg:items-center lg:gap-2.5 lg:py-12">
+                            <p className="text-sm font-medium uppercase text-slate-900 lg:text-base">
+                                {dayName}
+                            </p>
+                            <p className="text-4xl font-medium tabular-nums text-slate-900 lg:text-6xl">
+                                {dayNum}
+                            </p>
+                            <p className="text-xs font-medium uppercase text-slate-500 lg:text-base lg:text-slate-900">
+                                {monthName}
+                            </p>
                         </div>
-                        <p className="text-3xl font-bold tabular-nums text-slate-900">
-                            {nowHour.temperature > 0 ? "+" : ""}
-                            {nowHour.temperature}°C
-                        </p>
-                    </div>
-                ) : (
-                    <div className="leading-tight gap-2.5 py-12 flex flex-col items-center text-slate-900">
-                        <p className="text-base font-medium uppercase">{dayName}</p>
-                        <p className=" text-6xl font-medium tabular-nums">
-                            {dayNum}
-                        </p>
-                        <p className="text-base font-medium uppercase">
-                            {monthName}
-                        </p>
-                    </div>
-                )}
-                <div className="mt-auto">
-                    <div className="mt-3 border-t border-slate-100 pt-3 text-sm">
-                        <p className="text-slate-600 grid grid-cols-2">
+                    )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 lg:mt-auto lg:grid-cols-1 lg:gap-0">
+                    <div className="rounded-xl border border-slate-100 bg-white p-3 text-xs lg:rounded-none lg:border-0 lg:border-t lg:border-slate-100 lg:bg-transparent lg:p-0 lg:pt-3 lg:text-sm">
+                        <p className="grid grid-cols-2 text-slate-600">
                             Lever
-                            <span className="ml-1 font-medium text-slate-900 text-right tabular-nums">{sunrise}</span>
+                            <span className="text-right font-medium tabular-nums text-slate-900">{sunrise}</span>
                         </p>
-                        <p className="mt-1 text-slate-600 grid grid-cols-2">
+                        <p className="mt-1 grid grid-cols-2 text-slate-600">
                             Coucher
-                            <span className="ml-1 font-medium text-slate-900 text-right tabular-nums">{sunset}</span>
+                            <span className="text-right font-medium tabular-nums text-slate-900">{sunset}</span>
                         </p>
                     </div>
 
-                    <div className="mt-3 flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
-                        <MoonPhaseIcon phase={moonPhase} className="h-9 w-9 shrink-0" />
-                        <div className="leading-tight">
+                    <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2 lg:mt-3 lg:gap-3">
+                        <MoonPhaseIcon phase={moonPhase} className="h-8 w-8 shrink-0 lg:h-9 lg:w-9" />
+                        <div className="min-w-0 leading-tight">
                             <p className="text-[10px] uppercase tracking-wide text-slate-500">
                                 Phase lunaire
                             </p>
-                            <p className="text-sm font-semibold text-slate-900">
+                            <p className="truncate text-xs font-semibold text-slate-900 sm:text-sm">
                                 {moonPhaseLabel}
                             </p>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="flex-1 overflow-x-auto">
+            </aside>
+            <div className="-mx-3 overflow-x-auto sm:-mx-4 lg:mx-0 lg:flex-1">
                 <table className="min-w-full border-separate border-spacing-0 text-center text-[11px] md:text-xs">
                     <thead>
                         <tr>
@@ -257,7 +264,7 @@ export function ActiveDayHourlyForecast({
                                     key={`wind-${hour.hour}-${idx}`}
                                     className={`whitespace-nowrap h-8 py-0.5 font-medium text-slate-900 ${hourColCls} ${dividerCls(idx)} ${nowDataCellCls(idx)}`}
                                 >
-                                    <div className="flex items-center gap-1 leading-tight">
+                                    <div className="flex items-center justify-center gap-1 leading-tight">
                                         <span className="grid min-w-5 min-h-5 w-5 place-items-center rounded-full bg-white shadow-sm">
                                             <svg
                                                 viewBox="0 0 16 16"

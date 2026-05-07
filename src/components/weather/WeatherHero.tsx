@@ -34,46 +34,44 @@ export function WeatherHero({
     return (
         <section
             aria-labelledby="weather-hero-title"
-            className="relative overflow-hidden text-slate-900 mb-6 px-4 md:px-0"
+            className="relative overflow-hidden text-slate-900 mb-4 sm:mb-6"
         >
-            <div className="relative flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
+            <div className="relative flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
                 <div className="min-w-0">
                     <h1
                         id="weather-hero-title"
-                        className="text-2xl font-semibold tracking-tight sm:text-3xl"
+                        className="text-xl font-semibold tracking-tight sm:text-2xl lg:text-3xl"
                     >
                         <span className="text-slate-500">Meteo a</span> {heroName}
                     </h1>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-500 sm:text-base">
+                    <p className="mt-1.5 text-xs leading-relaxed text-slate-500 sm:mt-2 sm:text-sm lg:text-base">
                         {addressLine}
                     </p>
                 </div>
 
-                <div className="hidden lg:block">
-                    <div
-                        role="tablist"
-                        aria-label="Periode de prevision"
-                        className="inline-flex shrink-0 items-end gap-1 self-end rounded-full bg-blue-200 p-1 backdrop-blur"
-                    >
-                        {RANGES.map((range) => {
-                            const isActive = range === forecastRange;
-                            return (
-                                <button
-                                    key={range}
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={isActive}
-                                    onClick={() => onForecastRangeChange?.(range)}
-                                    className={`rounded-full  px-4 hover:cursor-pointer py-1.5 text-sm font-semibold transition ${isActive
-                                            ? "bg-white text-blue-700 shadow-sm"
-                                            : "text-slate-900"
-                                        }`}
-                                >
-                                    {range} jours
-                                </button>
-                            );
-                        })}
-                    </div>
+                <div
+                    role="tablist"
+                    aria-label="Periode de prevision"
+                    className="inline-flex w-full shrink-0 items-stretch gap-1 self-start rounded-full bg-blue-100 p-1 backdrop-blur sm:w-auto lg:items-end lg:self-end lg:bg-blue-200"
+                >
+                    {RANGES.map((range) => {
+                        const isActive = range === forecastRange;
+                        return (
+                            <button
+                                key={range}
+                                type="button"
+                                role="tab"
+                                aria-selected={isActive}
+                                onClick={() => onForecastRangeChange?.(range)}
+                                className={`flex-1 rounded-full px-4 py-1.5 text-xs font-semibold transition hover:cursor-pointer sm:flex-none sm:text-sm ${isActive
+                                    ? "bg-white text-blue-700 shadow-sm"
+                                    : "text-slate-700 lg:text-slate-900"
+                                    }`}
+                            >
+                                {range} jours
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
         </section>
