@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import { useId, type SVGProps } from "react";
 import type { MoonPhase } from "@/data/mockWeather";
 
 type MoonPhaseIconProps = SVGProps<SVGSVGElement> & {
@@ -40,16 +40,18 @@ export function MoonPhaseIcon({
                 ? `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx} ${cy + r} A ${r} ${r} 0 1 1 ${cx} ${cy - r}`
                 : `M ${cx} ${cy - r} A ${r} ${r} 0 0 ${outerSweep} ${cx} ${cy + r} A ${rx} ${r} 0 0 ${innerSweep} ${cx} ${cy - r}`;
 
-    const uid = phase;
+    const reactId = useId();
+    const darkId = `moon-dark-${phase}-${reactId}`;
+    const lightId = `moon-light-${phase}-${reactId}`;
 
     return (
         <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
             <defs>
-                <radialGradient id={`moon-dark-${uid}`} cx="50%" cy="50%" r="50%">
+                <radialGradient id={darkId} cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#334155" />
                     <stop offset="100%" stopColor="#0F172A" />
                 </radialGradient>
-                <radialGradient id={`moon-light-${uid}`} cx="40%" cy="35%" r="60%">
+                <radialGradient id={lightId} cx="40%" cy="35%" r="60%">
                     <stop offset="0%" stopColor="#FFFBEB" />
                     <stop offset="100%" stopColor="#FBBF24" />
                 </radialGradient>
@@ -58,11 +60,11 @@ export function MoonPhaseIcon({
                 cx={cx}
                 cy={cy}
                 r={r}
-                fill={`url(#moon-dark-${uid})`}
+                fill={`url(#${darkId})`}
                 stroke="#94A3B8"
                 strokeWidth="1"
             />
-            {litPath && <path d={litPath} fill={`url(#moon-light-${uid})`} />}
+            {litPath && <path d={litPath} fill={`url(#${lightId})`} />}
         </svg>
     );
 }

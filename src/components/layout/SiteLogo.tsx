@@ -12,7 +12,7 @@ export function SiteLogo() {
         alt="imeteoalgerie.com"
         width={260}
         height={70}
-        className="h-9 w-auto sm:h-12 lg:h-[60px]"
+        className="w-auto h-12 lg:h-[60px]"
         priority
       />
     </Link>

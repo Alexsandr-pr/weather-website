@@ -196,7 +196,7 @@ export function DailyForecast({
                 </ul>
             </div>
 
-            <div className="relative z-10 mt-3 rounded-2xl bg-transparent sm:mt-4 lg:mt-0 lg:rounded-2xl lg:rounded-t-none lg:border lg:border-slate-200 lg:border-t-0 lg:bg-white lg:p-3 lg:shadow-[0_0_7px_0_rgba(0,0,0,.27)]">
+            <div className="relative z-10 mt-3 rounded-2xl bg-transparent sm:mt-4 lg:mt-0 lg:rounded-2xl  lg:border lg:border-slate-200 lg:border-t-0 lg:bg-white lg:p-3 lg:shadow-[0_0_7px_0_rgba(0,0,0,.27)]">
                 <ActiveDayHourlyForecast
                     cityName={cityName}
                     dayName={activeDay.dayName}

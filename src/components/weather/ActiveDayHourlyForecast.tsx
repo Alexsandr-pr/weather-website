@@ -599,7 +599,7 @@ function MobileSunMoonRow({
     moonPhaseLabel,
 }: MobileSunMoonRowProps) {
     return (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2">
             <div className="rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2.5">
                 <p className="text-[10px] font-medium uppercase tracking-wide text-amber-700">
                     Soleil

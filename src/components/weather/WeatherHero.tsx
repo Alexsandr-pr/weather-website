@@ -36,7 +36,7 @@ export function WeatherHero({
             aria-labelledby="weather-hero-title"
             className="relative overflow-hidden text-slate-900 mb-4 sm:mb-6"
         >
-            <div className="relative flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
+            <div className="relative flex flex-col  gap-3 sm:gap-4 sm:flex-row sm:items-end justify-between lg:gap-6">
                 <div className="min-w-0">
                     <h1
                         id="weather-hero-title"
@@ -52,7 +52,7 @@ export function WeatherHero({
                 <div
                     role="tablist"
                     aria-label="Periode de prevision"
-                    className="inline-flex w-full shrink-0 items-stretch gap-1 self-start rounded-full bg-blue-100 p-1 backdrop-blur sm:w-auto lg:items-end lg:self-end lg:bg-blue-200"
+                    className="inline-flex w-full shrink-0 items-stretch gap-1 self-start rounded-full bg-blue-100 p-1 backdrop-blur sm:w-auto sm:items-end sm:self-end bg-blue-200"
                 >
                     {RANGES.map((range) => {
                         const isActive = range === forecastRange;
