@@ -21,7 +21,7 @@ export default function AlgerMeteoPage() {
         <div className="flex min-h-screen flex-col">
             <Header />
 
-            <main className="mx-auto w-full max-w-7xl flex-1 px-3 sm:px-6 lg:px-8">
+            <main className="mx-auto mt-10 w-full max-w-7xl flex-1 px-3 sm:px-6 lg:px-8">
                 <div className="flex flex-col gap-8 sm:gap-10">
                     <MeteoCityView data={data} formattedDate={formattedDate} />
                     <PrayerTimesCard
