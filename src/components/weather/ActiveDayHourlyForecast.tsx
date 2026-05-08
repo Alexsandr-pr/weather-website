@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { HourlyForecastItem, MoonPhase } from "@/data/mockWeather";
-import { WeatherConditionIcon } from "@/components/icons/WeatherIcons";
-import { ThermometerIcon } from "@/components/icons/ThermometerIcon";
-import { MoonPhaseIcon } from "@/components/icons/MoonPhaseIcon";
+import type { HourlyForecastItem, MoonPhase } from "@/shared/types/weather";
+import { MoonPhaseIcon, ThermometerIcon, WeatherConditionIcon } from "@/shared/ui/icons";
+    
 
 interface ActiveDayHourlyForecastProps {
     cityName: string;

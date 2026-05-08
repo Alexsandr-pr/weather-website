@@ -1,5 +1,5 @@
-import type { DailyForecastItem, HourlyForecastItem, MoonPhase } from "@/data/mockWeather";
-import { WeatherConditionIcon } from "@/components/icons/WeatherIcons";
+import type { DailyForecastItem, HourlyForecastItem, MoonPhase } from "@/shared/types/weather";
+import { WeatherConditionIcon } from "@/shared/ui/icons";
 import { ActiveDayHourlyForecast } from "@/components/weather/ActiveDayHourlyForecast";
 
 interface DailyForecastProps {

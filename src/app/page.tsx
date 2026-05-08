@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation";
+import { MeteoPage } from "@/widgets/meteo-page";
 
 export default function Home() {
-  redirect("/meteo/alger");
+  return (
+    <MeteoPage />
+  )
 }

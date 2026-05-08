@@ -1,0 +1,302 @@
+[
+    {
+        "slug": "alger",
+        "name": "Alger",
+        "nameLocative": "Alger",
+        "wilaya": "Wilaya d'Alger",
+        "region": "Centre",
+        "locality": "Ville d'Alger",
+        "lat": 36.7538,
+        "lon": 3.0588
+    },
+    {
+        "slug": "oran",
+        "name": "Oran",
+        "nameLocative": "Oran",
+        "wilaya": "Wilaya d'Oran",
+        "region": "Ouest",
+        "locality": "Ville d'Oran",
+        "lat": 35.6971,
+        "lon": -0.6308
+    },
+    {
+        "slug": "constantine",
+        "name": "Constantine",
+        "nameLocative": "Constantine",
+        "wilaya": "Wilaya de Constantine",
+        "region": "Est",
+        "locality": "Ville de Constantine",
+        "lat": 36.365,
+        "lon": 6.6147
+    },
+    {
+        "slug": "annaba",
+        "name": "Annaba",
+        "nameLocative": "Annaba",
+        "wilaya": "Wilaya d'Annaba",
+        "region": "Est",
+        "locality": "Ville d'Annaba",
+        "lat": 36.9,
+        "lon": 7.7667
+    },
+    {
+        "slug": "blida",
+        "name": "Blida",
+        "nameLocative": "Blida",
+        "wilaya": "Wilaya de Blida",
+        "region": "Centre",
+        "locality": "Ville de Blida",
+        "lat": 36.47,
+        "lon": 2.8277
+    },
+    {
+        "slug": "batna",
+        "name": "Batna",
+        "nameLocative": "Batna",
+        "wilaya": "Wilaya de Batna",
+        "region": "Est",
+        "locality": "Ville de Batna",
+        "lat": 35.55597,
+        "lon": 6.17414
+    },
+    {
+        "slug": "setif",
+        "name": "Setif",
+        "nameLocative": "Setif",
+        "wilaya": "Wilaya de Setif",
+        "region": "Est",
+        "locality": "Ville de Setif",
+        "lat": 36.1911,
+        "lon": 5.4137
+    },
+    {
+        "slug": "djelfa",
+        "name": "Djelfa",
+        "nameLocative": "Djelfa",
+        "wilaya": "Wilaya de Djelfa",
+        "region": "Hauts Plateaux",
+        "locality": "Ville de Djelfa",
+        "lat": 34.6728,
+        "lon": 3.263
+    },
+    {
+        "slug": "tlemcen",
+        "name": "Tlemcen",
+        "nameLocative": "Tlemcen",
+        "wilaya": "Wilaya de Tlemcen",
+        "region": "Ouest",
+        "locality": "Ville de Tlemcen",
+        "lat": 34.8783,
+        "lon": -1.315
+    },
+    {
+        "slug": "bejaia",
+        "name": "Bejaia",
+        "nameLocative": "Bejaia",
+        "wilaya": "Wilaya de Bejaia",
+        "region": "Kabylie",
+        "locality": "Ville de Bejaia",
+        "lat": 36.751,
+        "lon": 5.0567
+    },
+    {
+        "slug": "sidi-bel-abbes",
+        "name": "Sidi Bel Abbes",
+        "nameLocative": "Sidi Bel Abbes",
+        "wilaya": "Wilaya de Sidi Bel Abbes",
+        "region": "Ouest",
+        "locality": "Ville de Sidi Bel Abbes",
+        "lat": 35.1899,
+        "lon": -0.6308
+    },
+    {
+        "slug": "biskra",
+        "name": "Biskra",
+        "nameLocative": "Biskra",
+        "wilaya": "Wilaya de Biskra",
+        "region": "Sahara",
+        "locality": "Ville de Biskra",
+        "lat": 34.8504,
+        "lon": 5.728
+    },
+    {
+        "slug": "skikda",
+        "name": "Skikda",
+        "nameLocative": "Skikda",
+        "wilaya": "Wilaya de Skikda",
+        "region": "Est",
+        "locality": "Ville de Skikda",
+        "lat": 36.8762,
+        "lon": 6.9092
+    },
+    {
+        "slug": "tebessa",
+        "name": "Tebessa",
+        "nameLocative": "Tebessa",
+        "wilaya": "Wilaya de Tebessa",
+        "region": "Est",
+        "locality": "Ville de Tebessa",
+        "lat": 35.4042,
+        "lon": 8.1242
+    },
+    {
+        "slug": "mostaganem",
+        "name": "Mostaganem",
+        "nameLocative": "Mostaganem",
+        "wilaya": "Wilaya de Mostaganem",
+        "region": "Ouest",
+        "locality": "Ville de Mostaganem",
+        "lat": 35.9311,
+        "lon": 0.0892
+    },
+    {
+        "slug": "el-oued",
+        "name": "El Oued",
+        "nameLocative": "El Oued",
+        "wilaya": "Wilaya d'El Oued",
+        "region": "Sahara",
+        "locality": "Ville d'El Oued",
+        "lat": 33.3678,
+        "lon": 6.8515
+    },
+    {
+        "slug": "ouargla",
+        "name": "Ouargla",
+        "nameLocative": "Ouargla",
+        "wilaya": "Wilaya d'Ouargla",
+        "region": "Sahara",
+        "locality": "Ville d'Ouargla",
+        "lat": 31.9522,
+        "lon": 5.3237
+    },
+    {
+        "slug": "adrar",
+        "name": "Adrar",
+        "nameLocative": "Adrar",
+        "wilaya": "Wilaya d'Adrar",
+        "region": "Sahara",
+        "locality": "Ville d'Adrar",
+        "lat": 27.8743,
+        "lon": -0.2939
+    },
+    {
+        "slug": "ghardaia",
+        "name": "Ghardaia",
+        "nameLocative": "Ghardaia",
+        "wilaya": "Wilaya de Ghardaia",
+        "region": "Sahara",
+        "locality": "Ville de Ghardaia",
+        "lat": 32.4909,
+        "lon": 3.6735
+    },
+    {
+        "slug": "tiaret",
+        "name": "Tiaret",
+        "nameLocative": "Tiaret",
+        "wilaya": "Wilaya de Tiaret",
+        "region": "Hauts Plateaux",
+        "locality": "Ville de Tiaret",
+        "lat": 35.371,
+        "lon": 1.316
+    },
+    {
+        "slug": "saida",
+        "name": "Saida",
+        "nameLocative": "Saida",
+        "wilaya": "Wilaya de Saida",
+        "region": "Ouest",
+        "locality": "Ville de Saida",
+        "lat": 34.8408,
+        "lon": 0.1517
+    },
+    {
+        "slug": "chlef",
+        "name": "Chlef",
+        "nameLocative": "Chlef",
+        "wilaya": "Wilaya de Chlef",
+        "region": "Centre",
+        "locality": "Ville de Chlef",
+        "lat": 36.1653,
+        "lon": 1.3345
+    },
+    {
+        "slug": "jijel",
+        "name": "Jijel",
+        "nameLocative": "Jijel",
+        "wilaya": "Wilaya de Jijel",
+        "region": "Kabylie",
+        "locality": "Ville de Jijel",
+        "lat": 36.821,
+        "lon": 5.7667
+    },
+    {
+        "slug": "tipaza",
+        "name": "Tipaza",
+        "nameLocative": "Tipaza",
+        "wilaya": "Wilaya de Tipaza",
+        "region": "Centre",
+        "locality": "Ville de Tipaza",
+        "lat": 36.5897,
+        "lon": 2.4475
+    },
+    {
+        "slug": "mascara",
+        "name": "Mascara",
+        "nameLocative": "Mascara",
+        "wilaya": "Wilaya de Mascara",
+        "region": "Ouest",
+        "locality": "Ville de Mascara",
+        "lat": 35.3966,
+        "lon": 0.1403
+    },
+    {
+        "slug": "relizane",
+        "name": "Relizane",
+        "nameLocative": "Relizane",
+        "wilaya": "Wilaya de Relizane",
+        "region": "Ouest",
+        "locality": "Ville de Relizane",
+        "lat": 35.7373,
+        "lon": 0.5559
+    },
+    {
+        "slug": "khenchela",
+        "name": "Khenchela",
+        "nameLocative": "Khenchela",
+        "wilaya": "Wilaya de Khenchela",
+        "region": "Est",
+        "locality": "Ville de Khenchela",
+        "lat": 35.4358,
+        "lon": 7.1433
+    },
+    {
+        "slug": "msila",
+        "name": "Msila",
+        "nameLocative": "Msila",
+        "wilaya": "Wilaya de Msila",
+        "region": "Hauts Plateaux",
+        "locality": "Ville de Msila",
+        "lat": 35.7058,
+        "lon": 4.5419
+    },
+    {
+        "slug": "ain-temouchent",
+        "name": "Ain Temouchent",
+        "nameLocative": "Ain Temouchent",
+        "wilaya": "Wilaya d'Ain Temouchent",
+        "region": "Ouest",
+        "locality": "Ville d'Ain Temouchent",
+        "lat": 35.2975,
+        "lon": -1.1404
+    },
+    {
+        "slug": "laghouat",
+        "name": "Laghouat",
+        "nameLocative": "Laghouat",
+        "wilaya": "Wilaya de Laghouat",
+        "region": "Sahara",
+        "locality": "Ville de Laghouat",
+        "lat": 33.8,
+        "lon": 2.865
+    }
+]

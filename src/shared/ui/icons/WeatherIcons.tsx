@@ -1,5 +1,5 @@
 import type { SVGProps } from "react";
-import type { WeatherCondition, MoonPhase } from "@/data/mockWeather";
+import type { WeatherCondition, MoonPhase } from "@/shared/types/weather";
 
 type IconProps = SVGProps<SVGSVGElement> & { className?: string };
 

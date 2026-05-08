@@ -1,4 +1,4 @@
-import type { CityInfo, CurrentWeather } from "@/data/mockWeather";
+import type { CityInfo, CurrentWeather } from "@/shared/types/weather";
 
 export type ForecastRange = 7 | 10;
 
@@ -12,10 +12,8 @@ interface WeatherHeroProps {
 
 function buildAddressLine(city: CityInfo): string {
     const parts = [
-        city.region ?? city.wilaya,
-        city.locality,
-        city.district ? `(${city.district})` : null,
-        city.country,
+        city.wilaya,
+        city.locality ?? city.nameLocative ?? city.name,
     ].filter(Boolean) as string[];
 
     return parts.join(", ");

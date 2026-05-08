@@ -1,0 +1,1 @@
+export { MeteoPage } from "./MeteoPage";

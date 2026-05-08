@@ -1,13 +1,18 @@
-import type { PrayerTime, CityInfo } from "@/data/mockWeather";
-import { MosqueIcon, SunriseIcon } from "@/components/icons/UiIcons";
+import { ALGERIA_CITIES } from "@/shared/constants/cities";
+import { MosqueIcon, SunriseIcon } from "@/shared/ui/icons";
+import { getPrayerTimesBySlug } from "./services/getPrayerTimes";
 
 interface PrayerTimesCardProps {
-    prayers: PrayerTime[];
-    city: CityInfo;
-    sunrise: string;
+    slug: string;
 }
 
-export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps) {
+export async function PrayerTimesCard({ slug }: PrayerTimesCardProps) {
+    const city = ALGERIA_CITIES.find((c) => c.slug === slug);
+    const prayerData = await getPrayerTimesBySlug(slug);
+   
+    if (!city || !prayerData) return null;
+
+    const { prayers, sunrise } = prayerData;
     const mainPrayers = prayers.filter((p) => p.name !== "Lever du soleil");
     const nextPrayer = prayers.find((p) => p.isNext);
 
@@ -23,7 +28,7 @@ export function PrayerTimesCard({ prayers, city, sunrise }: PrayerTimesCardProps
                             Horaires de prieres
                         </h2>
                         <p className="truncate text-[11px] text-slate-500 sm:text-xs">
-                            {city.name}, {city.country}
+                            {city.name}, {city.wilaya}
                         </p>
                     </div>
                 </div>
