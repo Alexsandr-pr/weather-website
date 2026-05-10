@@ -7,15 +7,13 @@ import type { DailyWeather } from "@/widgets/meteo-page/types";
 import {
     dayBoundsIso,
     localDateTimeWithAlgiersOffset,
-    quantitativeCelsius,
 } from "./helpers";
 
 const WEB_SITE_ID = `${BRAND_URL}/#website`;
 
 /**
- * Use `CreativeWork`, not `WeatherForecast`: many validators (e.g. Yandex) do not
- * whitelist WeatherForecast, so ListItem.item and @type fail.
- * Forecast-specific fields remain as on a CreativeWork (Google accepts extensions).
+ * Day blocks use `CreativeWork` only, metrics in `additionalProperty` — avoids validators
+ * inferring `WeatherForecast` from `highTemperature` / `place` / `ItemList.item`.
  */
 const FORECAST_DAY_TYPE = "https://schema.org/CreativeWork";
 
@@ -30,42 +28,45 @@ function averageNumber(values: number[]): number | null {
     return Math.round((sum / values.length) * 10) / 10;
 }
 
-function buildWeatherForecastNode(
+function forecastDayFragment(index: number): string {
+    return index === 0 ? "weather-day" : `weather-day-${index}`;
+}
+
+function buildForecastDayNode(
     day: DailyWeather,
     placeId: string,
     index: number,
     baseUrl: string,
 ) {
-    const fragment = index === 0 ? "weather-day" : `weather-day-${index}`;
+    const fragment = forecastDayFragment(index);
     const { validFrom, validThrough } = dayBoundsIso(day.date);
     const condition = getWeatherCodeLabel(day.weatherCode);
     const windAvg = averageNumber(day.hours.map((h) => h.windSpeed));
     const humidityAvg = averageNumber(day.hours.map((h) => h.humidity));
     const pressureAvg = averageNumber(day.hours.map((h) => h.pressure));
 
-    const node: Record<string, unknown> = {
-        "@type": FORECAST_DAY_TYPE,
-        "@id": `${baseUrl}#${fragment}`,
-        name: `Prévisions du ${day.date} — ${condition}`,
-        description: `${condition}. Température max. ${Math.round(day.maxTemperature)} °C, min. ${Math.round(day.minTemperature)} °C. Source des données météo: Open-Meteo.`,
-        // CreativeWork temporal scope (strict vocab) — avoids unrecognized WeatherForecast-only props.
-        temporalCoverage: `${validFrom}/${validThrough}`,
-        highTemperature: quantitativeCelsius(day.maxTemperature),
-        lowTemperature: quantitativeCelsius(day.minTemperature),
-        spatialCoverage: { "@id": placeId },
-    };
+    const additional: Record<string, unknown>[] = [
+        {
+            "@type": "PropertyValue",
+            name: "Température maximale",
+            value: Math.round(day.maxTemperature * 10) / 10,
+            unitText: "°C",
+        },
+        {
+            "@type": "PropertyValue",
+            name: "Température minimale",
+            value: Math.round(day.minTemperature * 10) / 10,
+            unitText: "°C",
+        },
+    ];
 
     if (windAvg != null) {
-        node.windSpeed = {
-            "@type": "QuantitativeValue",
+        additional.push({
+            "@type": "PropertyValue",
+            name: "Vent moyen (km/h)",
             value: windAvg,
-            unitCode: "KMH",
-            unitText: "km/h",
-        };
+        });
     }
-
-    const additional: { "@type": string; name: string; value: string | number }[] =
-        [];
 
     additional.push({
         "@type": "PropertyValue",
@@ -89,9 +90,15 @@ function buildWeatherForecastNode(
         });
     }
 
-    if (additional.length > 0) {
-        node.additionalProperty = additional;
-    }
+    const node: Record<string, unknown> = {
+        "@type": FORECAST_DAY_TYPE,
+        "@id": `${baseUrl}#${fragment}`,
+        name: `Prévisions du ${day.date} — ${condition}`,
+        description: `${condition}. Température max. ${Math.round(day.maxTemperature)} °C, min. ${Math.round(day.minTemperature)} °C. Source des données météo: Open-Meteo.`,
+        temporalCoverage: `${validFrom}/${validThrough}`,
+        spatialCoverage: { "@id": placeId },
+        additionalProperty: additional,
+    };
 
     return node;
 }
@@ -111,7 +118,6 @@ export function buildMeteoCityJsonLd(options: {
     const webpageId = `${canonicalUrl}#webpage`;
     const placeId = `${canonicalUrl}#place`;
     const breadcrumbId = `${canonicalUrl}#breadcrumb`;
-    const weeklyId = `${canonicalUrl}#weekly-forecast`;
 
     const geo = {
         "@type": "GeoCoordinates",
@@ -159,8 +165,12 @@ export function buildMeteoCityJsonLd(options: {
     }
 
     const forecastNodes = visibleDaily.map((day, index) =>
-        buildWeatherForecastNode(day, placeId, index, canonicalUrl),
+        buildForecastDayNode(day, placeId, index, canonicalUrl),
     );
+
+    const hasPart = visibleDaily.map((_, index) => ({
+        "@id": `${canonicalUrl}#${forecastDayFragment(index)}`,
+    }));
 
     const graph: Record<string, unknown>[] = [
         {
@@ -171,7 +181,9 @@ export function buildMeteoCityJsonLd(options: {
             description: seo.description,
             isPartOf: { "@id": WEB_SITE_ID },
             about: { "@id": placeId },
-            mainEntity: { "@id": weeklyId },
+            /** No ItemList — strict validators choke on ListItem.item for forecast nodes. */
+            mainEntity: { "@id": placeId },
+            hasPart,
             breadcrumb: { "@id": breadcrumbId },
         },
         {
@@ -181,23 +193,6 @@ export function buildMeteoCityJsonLd(options: {
         },
         place,
         ...forecastNodes,
-        {
-            "@type": "ItemList",
-            "@id": weeklyId,
-            name: `Prévisions sur ${visibleDaily.length} jours — ${city.name}`,
-            description: `Prévisions journalières pour ${seo.cityName}: températures et conditions attendues.`,
-            numberOfItems: visibleDaily.length,
-            itemListElement: visibleDaily.map((_, index) => {
-                const fragment =
-                    index === 0 ? "weather-day" : `weather-day-${index}`;
-                return {
-                    "@type": "ListItem",
-                    position: index + 1,
-                    /** URL form — many validators reject bare `{ "@id" }` for ListItem.item. */
-                    item: `${canonicalUrl}#${fragment}`,
-                };
-            }),
-        },
     ];
 
     if (prayer) {
