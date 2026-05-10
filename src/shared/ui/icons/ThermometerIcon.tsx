@@ -10,8 +10,8 @@ type ThermometerProps = SVGProps<SVGSVGElement> & {
 export function ThermometerIcon({
     className = "h-32 w-12",
     temperature,
-    minTemp = -40,
-    maxTemp = 40,
+    minTemp = -20,
+    maxTemp = 50,
     ...props
 }: ThermometerProps) {
     const tubeTopY = 14;
@@ -26,7 +26,7 @@ export function ThermometerIcon({
     const fillTopColor = isHot ? "#F87171" : "#60A5FA";
     const fillBottomColor = isHot ? "#DC2626" : "#2563EB";
 
-    const ticks = [40, 20, 0, -20, -40];
+    const ticks = [50, 25, 0, -20];
 
     return (
         <svg
@@ -90,7 +90,7 @@ export function ThermometerIcon({
                 {ticks.map((t) => {
                     const ratio = (t - minTemp) / (maxTemp - minTemp);
                     const y = tubeBottomY - tubeHeight * ratio;
-                    const isMajor = t === 0 || Math.abs(t) === 40;
+                    const isMajor = t === 0 || t === 50 || t === -20;
                     return (
                         <g key={t}>
                             <line

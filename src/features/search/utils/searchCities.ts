@@ -11,7 +11,7 @@ export function searchCities(query: string, limit = 8): CityListItem[] {
 
     for (const city of ALGERIA_CITIES) {
         const byName = normalize(city.name);
-        const haystack = normalize(`${city.name} ${city.wilaya}`);
+        const haystack = normalize(`${city.name} ${city.wilaya_name}`);
         if (byName.startsWith(q) || haystack.startsWith(q)) {
             starts.push(city);
         } else if (haystack.includes(q)) {

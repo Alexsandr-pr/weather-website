@@ -11,6 +11,5 @@ export type MoonPhase =
 export interface PrayerTime {
   name: string;
   time: string;
-  isNext?: boolean;
 }
   

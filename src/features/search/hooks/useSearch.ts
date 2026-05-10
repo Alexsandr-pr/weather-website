@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { CityListItem } from "@/shared/types/city";
+import { buildMeteoCityBasePath } from "@/shared/utils/meteoCityPath";
 import { searchCities } from "../utils/searchCities";
 
 interface UseSearchOptions {
@@ -51,7 +52,7 @@ export function useSearch({ limit = 8 }: UseSearchOptions = {}) {
         setQuery("");
         setActiveIndex(-1);
         inputRef.current?.blur();
-        router.push(`/meteo/${city.slug}`);
+        router.push(buildMeteoCityBasePath(city));
     };
 
     const clearQuery = () => {

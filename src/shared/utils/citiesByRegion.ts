@@ -1,15 +1,18 @@
 import { ALGERIA_CITIES } from "@/shared/constants/cities";
+import { getRegionLabelForWilayaName } from "@/shared/constants/region-by-wilaya";
 import type { CityListItem } from "@/shared/types/city";
+import { getMeteoCityKey } from "@/shared/utils/meteoCityPath";
 
-export function getCityBySlug(slug: string): CityListItem | undefined {
-  return ALGERIA_CITIES.find((city) => city.slug === slug);
-}
+export { getCityByMeteoSlugs } from "@/shared/utils/meteoCityPath";
 
-export function getCitiesInSameRegion(slug: string): CityListItem[] {
-  const current = getCityBySlug(slug);
-  if (!current) return [];
+export function getCitiesInSameRegion(current: CityListItem): CityListItem[] {
+  const region = getRegionLabelForWilayaName(current.wilaya_name);
+  if (!region) return [];
 
-  return ALGERIA_CITIES.filter(
-    (city) => city.region === current.region && city.slug !== current.slug,
-  );
+  const selfKey = getMeteoCityKey(current);
+
+  return ALGERIA_CITIES.filter((other) => {
+    if (getMeteoCityKey(other) === selfKey) return false;
+    return getRegionLabelForWilayaName(other.wilaya_name) === region;
+  });
 }

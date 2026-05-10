@@ -1,33 +1,39 @@
-"use client";
-
-import { useState } from "react";
 import type { DailyWeather } from "@/widgets/meteo-page/types";
 import { DailyForecast } from "./DailyForecast";
 
 interface MeteoCityViewProps {
     weatherData: DailyWeather[];
     cityName: string;
+    meteoBasePath: string;
+    activeDayIndex: number;
+    isTodayRoute: boolean;
 }
 
 const FORECAST_DAYS = 7;
 
-export function MeteoCityView({ weatherData, cityName }: MeteoCityViewProps) {
+export function MeteoCityView({
+    weatherData,
+    cityName,
+    meteoBasePath,
+    activeDayIndex,
+    isTodayRoute,
+}: MeteoCityViewProps) {
+    
     const visibleDaily = weatherData.slice(0, FORECAST_DAYS);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const safeIndex = Math.min(activeIndex, visibleDaily.length - 1);
-    const activeDay = visibleDaily[safeIndex];
 
-    const handleDaySelect = (date: string) => {
-        const idx = visibleDaily.findIndex((d) => d.date === date);
-        if (idx >= 0) setActiveIndex(idx);
-    };
+    const safeIndex = Math.min(
+        Math.max(activeDayIndex, 0),
+        visibleDaily.length - 1,
+    );
+    const activeDay = visibleDaily[safeIndex];
 
     return (
         <DailyForecast
             cityName={cityName}
+            meteoBasePath={meteoBasePath}
             items={visibleDaily}
             activeDay={activeDay}
-            onDaySelect={handleDaySelect}
+            isTodayRoute={isTodayRoute}
         />
     );
 }

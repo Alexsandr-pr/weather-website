@@ -101,6 +101,11 @@ function IconDefs({ id }: { id: string }) {
                 <stop offset="50%" stopColor="#7E94B3" />
                 <stop offset="100%" stopColor="#B7C8E0" stopOpacity="0.2" />
             </linearGradient>
+            <linearGradient id={`${id}-fog-night`} x1="0%" y1="50%" x2="100%" y2="50%">
+                <stop offset="0%" stopColor="#64748B" stopOpacity="0.25" />
+                <stop offset="50%" stopColor="#475569" />
+                <stop offset="100%" stopColor="#64748B" stopOpacity="0.25" />
+            </linearGradient>
 
             <filter id={`${id}-glow`} x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="1.6" result="b" />
@@ -257,17 +262,41 @@ function Stars({ items }: { items: Array<{ x: number; y: number; r?: number }> }
 const CLOUD_BODY =
     "M19 42c-5.3 0-9.5-3.8-9.5-8.8s4.2-8.8 9.5-8.8c1 0 2 .2 3 .5 1.7-4.7 6.2-7.7 11.5-7.7 7 0 12.5 5.3 12.5 11.7 0 .5 0 1-.1 1.5C50.4 30.8 53 33.6 53 37.3c0 4.9-4.2 8.8-9.5 8.8H19z";
 
+const CLOUD_BODY_HIGHLIGHT =
+    "M22 28c-1.6 0-3 .6-4 1.5 1-3.5 4.5-6 8.5-6 1.6 0 3 .4 4.4 1.1-2.5 .4-5.7 1.7-8.9 3.4z";
+
+/** Couche large et basse (Stratocumulus) — silhouette distincte du cumulus. */
+const CLOUD_LAYER_WIDE =
+    "M6 44C6 34 16 28 28 30C34 24 46 25 56 32C60 36 58 44 50 46C38 49 22 49 12 45C8.5 44 6 44.5 6 44z";
+
+const CLOUD_LAYER_WIDE_HIGHLIGHT =
+    "M12 34c-1.1 0-2 .35-2.7.9.7-2 3.2-3.6 6.2-3.2 3.6 0 8.2 2.4 10.2 5.4-1.8-3.4-6.4-5.6-13.7-3.2z";
+
 function Cloud({
     id,
     variant = "day",
     transform,
     opacity = 1,
+    shape = "cumulus",
 }: {
     id: string;
     variant?: "day" | "storm" | "snow";
     transform?: string;
     opacity?: number;
+    /** cumulus — forme standard ; layerWide — nuage bas et horizontal pour le ciel couvert */
+    shape?: "cumulus" | "layerWide";
 }) {
+    const bodyPath = shape === "layerWide" ? CLOUD_LAYER_WIDE : CLOUD_BODY;
+    const highlightPath =
+        shape === "layerWide" ? CLOUD_LAYER_WIDE_HIGHLIGHT : CLOUD_BODY_HIGHLIGHT;
+    const highlightOpacity =
+        shape === "layerWide"
+            ? variant === "storm"
+                ? 0.12
+                : 0.38
+            : variant === "storm"
+              ? 0.18
+              : 0.55;
     const fill =
         variant === "storm"
             ? `url(#${id}-cloud-storm)`
@@ -282,11 +311,11 @@ function Cloud({
                 : "#A6BAD3";
     return (
         <g opacity={opacity} transform={transform} filter={`url(#${id}-shadow)`}>
-            <path d={CLOUD_BODY} fill={fill} stroke={stroke} strokeWidth="1" />
+            <path d={bodyPath} fill={fill} stroke={stroke} strokeWidth="1" />
             <path
-                d="M22 28c-1.6 0-3 .6-4 1.5 1-3.5 4.5-6 8.5-6 1.6 0 3 .4 4.4 1.1-2.5 .4-5.7 1.7-8.9 3.4z"
+                d={highlightPath}
                 fill="#FFFFFF"
-                opacity={variant === "storm" ? 0.18 : 0.55}
+                opacity={highlightOpacity}
             />
         </g>
     );
@@ -484,24 +513,26 @@ function Lightning({
     );
 }
 
-function FogLines({ id }: { id: string }) {
+function FogLines({ id, variant = "day" }: { id: string; variant?: "day" | "night" }) {
+    const strokeUrl = variant === "night" ? `url(#${id}-fog-night)` : `url(#${id}-fog)`;
+    const opacity = variant === "night" ? 0.92 : 1;
     return (
-        <g strokeLinecap="round">
+        <g strokeLinecap="round" opacity={opacity}>
             <path
                 d="M8 44 q8 -3 16 0 q8 3 16 0 q8 -3 16 0"
-                stroke={`url(#${id}-fog)`}
+                stroke={strokeUrl}
                 strokeWidth="3"
                 fill="none"
             />
             <path
                 d="M10 51 q8 -3 16 0 q8 3 16 0 q6 -2 12 0"
-                stroke={`url(#${id}-fog)`}
+                stroke={strokeUrl}
                 strokeWidth="3"
                 fill="none"
             />
             <path
                 d="M14 58 q8 -3 16 0 q8 3 16 0"
-                stroke={`url(#${id}-fog)`}
+                stroke={strokeUrl}
                 strokeWidth="3"
                 fill="none"
             />
@@ -583,36 +614,146 @@ export function PartlyCloudyNightIcon(props: IconProps) {
     );
 }
 
-export function OvercastIcon(props: IconProps) {
+/** Couvert de jour : grande couche basse + cumulus principal + petit relief. */
+export function OvercastDayIcon(props: IconProps) {
     const id = useId();
     return (
         <BaseSvg {...props}>
             <IconDefs id={id} />
-            <Cloud id={id} variant="day" transform="translate(-6 -6) scale(0.9)" opacity={0.7} />
-            <Cloud id={id} variant="storm" transform="translate(2 4) scale(0.95)" />
+            <Cloud
+                id={id}
+                variant="day"
+                shape="layerWide"
+                transform="translate(0 5)"
+                opacity={0.52}
+            />
+            <Cloud
+                id={id}
+                variant="day"
+                shape="cumulus"
+                transform="translate(-9 -1) scale(0.96)"
+                opacity={0.88}
+            />
+            <Cloud
+                id={id}
+                variant="day"
+                shape="cumulus"
+                transform="translate(24 -11) scale(0.48)"
+                opacity={0.7}
+            />
         </BaseSvg>
     );
 }
 
-export function FogIcon(props: IconProps) {
+/** Couvert de nuit : meme composition (couche + cumulus) en ton orage, lune et etoiles derriere. */
+export function OvercastNightIcon(props: IconProps) {
     const id = useId();
     return (
         <BaseSvg {...props}>
             <IconDefs id={id} />
-            <Cloud id={id} variant="day" transform="translate(0 -10)" opacity={0.85} />
-            <FogLines id={id} />
+            <Stars
+                items={[
+                    { x: 14, y: 17, r: 1.1 },
+                    { x: 52, y: 13, r: 1.3 },
+                    { x: 18, y: 48, r: 1 },
+                ]}
+            />
+            <Moon id={id} cx={38} cy={28} r={11} />
+            <Cloud
+                id={id}
+                variant="storm"
+                shape="layerWide"
+                transform="translate(0 4)"
+                opacity={0.58}
+            />
+            <Cloud
+                id={id}
+                variant="storm"
+                shape="cumulus"
+                transform="translate(-9 -2) scale(0.96)"
+                opacity={0.88}
+            />
+            <Cloud
+                id={id}
+                variant="storm"
+                shape="cumulus"
+                transform="translate(24 -12) scale(0.48)"
+                opacity={0.72}
+            />
         </BaseSvg>
     );
 }
 
-export function RimeFogIcon(props: IconProps) {
+/** Brouillard / brume — jour : nuage clair + trainee gris-bleu lumineuses. */
+export function FogDayIcon(props: IconProps) {
     const id = useId();
     return (
         <BaseSvg {...props}>
             <IconDefs id={id} />
-            <Cloud id={id} variant="snow" transform="translate(0 -10)" opacity={0.85} />
-            <FogLines id={id} />
+            <Cloud id={id} variant="day" shape="layerWide" transform="translate(-2 -4) scale(0.94)" opacity={0.45} />
+            <Cloud id={id} variant="day" transform="translate(0 -10)" opacity={0.88} />
+            <FogLines id={id} variant="day" />
+        </BaseSvg>
+    );
+}
+
+/** Brouillard de nuit : couche plus sombre + brume slate + lune diffuse. */
+export function FogNightIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Stars
+                items={[
+                    { x: 12, y: 44, r: 0.9 },
+                    { x: 54, y: 16, r: 1.15 },
+                    { x: 50, y: 40, r: 0.8 },
+                ]}
+            />
+            <Moon id={id} cx={36} cy={22} r={9} />
+            <Cloud id={id} variant="storm" shape="layerWide" transform="translate(-3 -6) scale(0.96)" opacity={0.4} />
+            <Cloud id={id} variant="storm" transform="translate(1 -11)" opacity={0.72} />
+            <FogLines id={id} variant="night" />
+        </BaseSvg>
+    );
+}
+
+/** Givre/brume glaciale — jour */
+export function RimeFogDayIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="snow" shape="layerWide" transform="translate(-2 -4) scale(0.94)" opacity={0.42} />
+            <Cloud id={id} variant="snow" transform="translate(0 -10)" opacity={0.86} />
+            <FogLines id={id} variant="day" />
             <g fill="#22D3EE">
+                <circle cx="20" cy="60" r="0.9" />
+                <circle cx="32" cy="62" r="0.9" />
+                <circle cx="44" cy="60" r="0.9" />
+            </g>
+        </BaseSvg>
+    );
+}
+
+/** Givre/brume glaciale — nuit */
+export function RimeFogNightIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Stars
+                items={[
+                    { x: 14, y: 42, r: 0.85 },
+                    { x: 52, y: 14, r: 1.2 },
+                    { x: 22, y: 18, r: 0.95 },
+                ]}
+            />
+            <Moon id={id} cx={38} cy={22} r={8} />
+            <Cloud id={id} variant="snow" shape="layerWide" transform="translate(-3 -6) scale(0.96)" opacity={0.4} />
+            <Cloud id={id} variant="snow" transform="translate(1 -11)" opacity={0.7} />
+            <FogLines id={id} variant="night" />
+            <g fill="#67E8F9">
                 <circle cx="20" cy="60" r="0.9" />
                 <circle cx="32" cy="62" r="0.9" />
                 <circle cx="44" cy="60" r="0.9" />
@@ -831,9 +972,9 @@ export function WeatherCodeIcon({ code, isNight, ...rest }: WeatherCodeIconProps
         case 2:
             return isNight ? <PartlyCloudyNightIcon {...rest} /> : <PartlyCloudyDayIcon {...rest} />;
         case 45:
-            return <FogIcon {...rest} />;
+            return isNight ? <FogNightIcon {...rest} /> : <FogDayIcon {...rest} />;
         case 48:
-            return <RimeFogIcon {...rest} />;
+            return isNight ? <RimeFogNightIcon {...rest} /> : <RimeFogDayIcon {...rest} />;
         case 51:
             return <DrizzleIcon intensity="light" {...rest} />;
         case 53:
@@ -880,6 +1021,10 @@ export function WeatherCodeIcon({ code, isNight, ...rest }: WeatherCodeIconProps
             return <ThunderstormIcon hail="heavy" {...rest} />;
         case 3:
         default:
-            return <OvercastIcon {...rest} />;
+            return isNight ? (
+                <OvercastNightIcon {...rest} />
+            ) : (
+                <OvercastDayIcon {...rest} />
+            );
     }
 }

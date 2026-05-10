@@ -1,7 +1,10 @@
-import { ALGERIA_CITIES } from "@/shared/constants/cities";
+import { cache } from "react";
+
+import type { CityListItem } from "@/shared/types/city";
 import type { PrayerTime } from "@/shared/types/weather";
-import { fetchPrayerTimings } from "./aladhanApi";
+
 import { buildPrayerTimes } from "../utils/buildPrayerTimes";
+import { fetchPrayerTimings } from "./aladhanApi";
 
 interface PrayerTimesResult {
     prayers: PrayerTime[];
@@ -9,19 +12,30 @@ interface PrayerTimesResult {
     timezone: string;
 }
 
-export async function getPrayerTimesBySlug(slug: string): Promise<PrayerTimesResult | null> {
-    const city = ALGERIA_CITIES.find((c) => c.slug === slug);
-    if (!city) return null;
-
-    try {
-        const response = await fetchPrayerTimings(city.lat, city.lon);
-        const { timings, meta } = response.data;
-        const prayers = buildPrayerTimes(timings);
-        const sunrise = timings.Sunrise.split(" ")[0];
-
-        return { prayers, sunrise, timezone: meta.timezone };
-    } catch (error) {
-        console.error("[prayer] failed to load timings", error);
-        return null;
-    }
+function toPrayerDate(isoDate?: string): Date {
+    if (!isoDate) return new Date();
+    return new Date(`${isoDate}T00:00:00`);
 }
+
+export const getPrayerTimesForCity = cache(
+    async function getPrayerTimesForCity(
+        city: CityListItem,
+        isoDate?: string,
+    ): Promise<PrayerTimesResult | null> {
+        try {
+            const response = await fetchPrayerTimings(
+                city.lat,
+                city.lon,
+                toPrayerDate(isoDate),
+            );
+            const { timings, meta } = response.data;
+            const prayers = buildPrayerTimes(timings);
+            const sunrise = timings.Sunrise.split(" ")[0];
+
+            return { prayers, sunrise, timezone: meta.timezone };
+        } catch (error) {
+            console.error("[prayer] failed to load timings", error);
+            return null;
+        }
+    },
+);

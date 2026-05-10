@@ -1,6 +1,8 @@
 "use client";
 
 import { CloseIcon, MapPinIcon, SearchIcon } from "@/shared/ui/icons";
+import { getRegionLabelForWilayaName } from "@/shared/constants/region-by-wilaya";
+import { getMeteoCityKey } from "@/shared/utils/meteoCityPath";
 import { highlightMatch } from "./utils/highlightMatch";
 import { useSearch } from "./hooks";
 
@@ -65,9 +67,12 @@ export function Search() {
                             {results.map((city, index) => {
                                 const active = index === activeIndex;
                                 const parts = highlightMatch(city.name, query);
+                                const regionLabel = getRegionLabelForWilayaName(
+                                    city.wilaya_name,
+                                );
                                 return (
                                     <li
-                                        key={city.slug}
+                                        key={getMeteoCityKey(city)}
                                         role="option"
                                         aria-selected={active}
                                         onMouseDown={(e) => {
@@ -92,7 +97,8 @@ export function Search() {
                                                 )}
                                             </span>
                                             <p className="truncate text-xs text-secondary">
-                                                {city.wilaya} - {city.region}
+                                                {city.wilaya_name}
+                                                {regionLabel ? ` — ${regionLabel}` : ""}
                                             </p>
                                         </div>
                                     </li>

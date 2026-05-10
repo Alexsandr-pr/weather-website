@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type {
     DailyWeather,
     OpenMeteoAirQualityResponse,
@@ -6,7 +7,11 @@ import type {
 import { GetWeatherParams } from "../types/get-weather-params.type";
 import { transformWeatherResponse } from "../utils/transformWeatherResponse";
 
-export async function getWeather({ lat, lon }: GetWeatherParams): Promise<DailyWeather[]> {
+async function getWeatherImpl({
+    lat,
+    lon,
+    revalidateSeconds,
+}: GetWeatherParams): Promise<DailyWeather[]> {
     const weatherParams = new URLSearchParams({
         latitude: String(lat),
         longitude: String(lon),
@@ -63,9 +68,11 @@ export async function getWeather({ lat, lon }: GetWeatherParams): Promise<DailyW
 
     const airQualityUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?${airQualityParams.toString()}`;
 
+    const fetchNext = { next: { revalidate: revalidateSeconds } } as const;
+
     const [weatherRes, airRes] = await Promise.all([
-        fetch(weatherUrl),
-        fetch(airQualityUrl),
+        fetch(weatherUrl, fetchNext),
+        fetch(airQualityUrl, fetchNext),
     ]);
 
     if (!weatherRes.ok) {
@@ -81,3 +88,5 @@ export async function getWeather({ lat, lon }: GetWeatherParams): Promise<DailyW
 
     return transformWeatherResponse(weather, airQuality);
 }
+
+export const getWeather = cache(getWeatherImpl);

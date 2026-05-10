@@ -6,6 +6,11 @@ export function getFrenchDayName(isoDate: string): string {
     return FRENCH_DAYS[new Date(`${isoDate}T00:00:00`).getDay()];
 }
 
+/** Slug pour l'URL (/meteo/wilaya/ville/lundi, etc.) */
+export function getFrenchWeekdaySlug(isoDate: string): string {
+    return FRENCH_DAYS[new Date(`${isoDate}T00:00:00`).getDay()].toLowerCase();
+}
+
 export function getFrenchDayShort(isoDate: string): string {
     return DAY_SHORTS[new Date(`${isoDate}T00:00:00`).getDay()];
 }

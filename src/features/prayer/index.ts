@@ -1,2 +1,2 @@
 export { PrayerTimesCard } from "./PrayerTimesCard";
-export { getPrayerTimesBySlug } from "./services/getPrayerTimes";
+export { getPrayerTimesForCity } from "./services/getPrayerTimes";
