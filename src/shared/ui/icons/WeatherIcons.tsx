@@ -265,7 +265,7 @@ const CLOUD_BODY =
 const CLOUD_BODY_HIGHLIGHT =
     "M22 28c-1.6 0-3 .6-4 1.5 1-3.5 4.5-6 8.5-6 1.6 0 3 .4 4.4 1.1-2.5 .4-5.7 1.7-8.9 3.4z";
 
-/** Couche large et basse (Stratocumulus) — silhouette distincte du cumulus. */
+/** Wide low layer (stratocumulus) — distinct silhouette from cumulus. */
 const CLOUD_LAYER_WIDE =
     "M6 44C6 34 16 28 28 30C34 24 46 25 56 32C60 36 58 44 50 46C38 49 22 49 12 45C8.5 44 6 44.5 6 44z";
 
@@ -283,7 +283,7 @@ function Cloud({
     variant?: "day" | "storm" | "snow";
     transform?: string;
     opacity?: number;
-    /** cumulus — forme standard ; layerWide — nuage bas et horizontal pour le ciel couvert */
+    /** cumulus: classic puffy shape; layerWide: low horizontal layer for overcast sky */
     shape?: "cumulus" | "layerWide";
 }) {
     const bodyPath = shape === "layerWide" ? CLOUD_LAYER_WIDE : CLOUD_BODY;
@@ -614,7 +614,7 @@ export function PartlyCloudyNightIcon(props: IconProps) {
     );
 }
 
-/** Couvert de jour : grande couche basse + cumulus principal + petit relief. */
+/** Overcast day: large low layer + main cumulus + small foreground accent. */
 export function OvercastDayIcon(props: IconProps) {
     const id = useId();
     return (
@@ -645,7 +645,7 @@ export function OvercastDayIcon(props: IconProps) {
     );
 }
 
-/** Couvert de nuit : meme composition (couche + cumulus) en ton orage, lune et etoiles derriere. */
+/** Overcast night: same stack (layer + cumulus), stormy tones, moon and stars behind. */
 export function OvercastNightIcon(props: IconProps) {
     const id = useId();
     return (
@@ -684,7 +684,7 @@ export function OvercastNightIcon(props: IconProps) {
     );
 }
 
-/** Brouillard / brume — jour : nuage clair + trainee gris-bleu lumineuses. */
+/** Fog/haze — day: bright cloud base + light grey-blue wisps. */
 export function FogDayIcon(props: IconProps) {
     const id = useId();
     return (
@@ -697,7 +697,7 @@ export function FogDayIcon(props: IconProps) {
     );
 }
 
-/** Brouillard de nuit : couche plus sombre + brume slate + lune diffuse. */
+/** Fog — night: darker layer + slate haze + soft moon. */
 export function FogNightIcon(props: IconProps) {
     const id = useId();
     return (
@@ -718,7 +718,7 @@ export function FogNightIcon(props: IconProps) {
     );
 }
 
-/** Givre/brume glaciale — jour */
+/** Frost/freezing fog — day */
 export function RimeFogDayIcon(props: IconProps) {
     const id = useId();
     return (
@@ -736,7 +736,7 @@ export function RimeFogDayIcon(props: IconProps) {
     );
 }
 
-/** Givre/brume glaciale — nuit */
+/** Frost/freezing fog — night */
 export function RimeFogNightIcon(props: IconProps) {
     const id = useId();
     return (

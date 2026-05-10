@@ -12,7 +12,7 @@ const WEEKDAY_BY_SLUG = new Map(
 
 export interface MeteoPageSeo {
     city: CityListItem | undefined;
-    /** Tier effectif : JSON prioritaire, sinon `getTier`. Absent si ville introuvable. */
+    /** Effective tier: JSON overrides `tier`, otherwise `getTier`. Undefined if city not found. */
     tier: CityCacheTier | undefined;
     cityName: string;
     weekdayLabel: string | undefined;

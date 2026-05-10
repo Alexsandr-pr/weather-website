@@ -24,7 +24,7 @@ const FORECAST_DAYS = 7;
 interface MeteoPageProps {
     wilayaSlug?: string;
     citySlug?: string;
-    /** Segment d'URL pour les jours 2–7 (ex. lundi, mardi) — absent pour aujourd'hui */
+    /** URL segment for forecast days 2–7 (e.g. lundi, mardi); omitted for “today”. */
     forecastDaySlug?: string;
 }
 

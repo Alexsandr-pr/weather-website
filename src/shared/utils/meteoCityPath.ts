@@ -14,7 +14,7 @@ export function getMeteoCityPathSlugs(city: CityListItem) {
   };
 }
 
-/** Segment de jour pour `[[...forecastDay]]` (ex. « dimanche »). */
+/** Optional forecast-day segment for `[[...forecastDay]]` (e.g. dimanche). */
 export function buildMeteoPathFromSlugs(
   wilayaSlug: string,
   citySlug: string,

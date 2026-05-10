@@ -7,6 +7,6 @@ export interface CityListItem {
   wilaya_code: string;
   wilaya_name: string;
   daira_name: string;
-  /** Niveau de fraîcheur du cache API (voir `REVALIDATE_BY_TIER`). */
+  /** API data cache freshness tier (see `REVALIDATE_BY_TIER`). */
   tier?: CityCacheTier;
 }

@@ -9,7 +9,7 @@ const CARDINALS_FR_8 = [
     "nord-ouest",
 ] as const;
 
-/** Angle meteorologique en degres (0 = nord, sens horaire). Huit directions, libelle en francais. */
+/** Meteorological azimuth in degrees (0 = north, clockwise). Eight compass labels in French. */
 export function windDirectionDegToFrenchCardinal8(deg: number): string {
     const normalized = ((deg % 360) + 360) % 360;
     const idx = Math.round(normalized / 45) % 8;

@@ -1,4 +1,4 @@
-/** Fuseau côté client: l'Algérie n'observe pas l'heure d'été (UTC+1). */
+/** Client-side timezone: Algeria does not observe DST (UTC+1 all year). */
 const ALGIERS_OFFSET = "+01:00";
 
 export function quantitativeCelsius(value: number) {
@@ -10,7 +10,7 @@ export function quantitativeCelsius(value: number) {
     };
 }
 
-/** `isoDate` YYYY-MM-DD, `hhmm` HH:mm (heure locale pour la ville). */
+/** `isoDate` YYYY-MM-DD, `hhmm` HH:mm (local wall time for the place). */
 export function localDateTimeWithAlgiersOffset(isoDate: string, hhmm: string) {
     return `${isoDate}T${hhmm}:00${ALGIERS_OFFSET}`;
 }

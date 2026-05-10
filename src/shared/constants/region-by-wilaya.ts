@@ -117,7 +117,7 @@ export function getTier(city: CityListItem): CityCacheTier {
     return 3;
 }
 
-/** `tier` explicite dans le JSON l’emporte ; sinon calcul via `getTier`. */
+/** Explicit `tier` in JSON wins; otherwise derived via `getTier`. */
 export function resolveEffectiveTier(city: CityListItem): CityCacheTier {
     if (city.tier != null) {
         return city.tier;
