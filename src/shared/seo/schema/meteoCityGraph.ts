@@ -12,6 +12,9 @@ import {
 
 const WEB_SITE_ID = `${BRAND_URL}/#website`;
 
+/** Stable @type IRI — some validators only accept full schema.org URLs. */
+const WEATHER_FORECAST_TYPE = "https://schema.org/WeatherForecast";
+
 interface PrayerTimesPayload {
     prayers: { name: string; time: string }[];
     sunrise: string;
@@ -37,7 +40,7 @@ function buildWeatherForecastNode(
     const pressureAvg = averageNumber(day.hours.map((h) => h.pressure));
 
     const node: Record<string, unknown> = {
-        "@type": "WeatherForecast",
+        "@type": WEATHER_FORECAST_TYPE,
         "@id": `${baseUrl}#${fragment}`,
         name: `Prévisions du ${day.date} — ${condition}`,
         description: `${condition}. Température max. ${Math.round(day.maxTemperature)} °C, min. ${Math.round(day.minTemperature)} °C. Source des données météo: Open-Meteo.`,
@@ -45,7 +48,8 @@ function buildWeatherForecastNode(
         validThrough,
         highTemperature: quantitativeCelsius(day.maxTemperature),
         lowTemperature: quantitativeCelsius(day.minTemperature),
-        place: { "@id": placeId },
+        /** CreativeWork / forecast: geographic focus — not `place` (invalid on WeatherForecast). */
+        spatialCoverage: { "@id": placeId },
     };
 
     if (windAvg != null) {
@@ -180,13 +184,16 @@ export function buildMeteoCityJsonLd(options: {
             name: `Prévisions sur ${visibleDaily.length} jours — ${city.name}`,
             description: `Prévisions journalières pour ${seo.cityName}: températures et conditions attendues.`,
             numberOfItems: visibleDaily.length,
-            itemListElement: visibleDaily.map((_, index) => ({
-                "@type": "ListItem",
-                position: index + 1,
-                item: {
-                    "@id": `${canonicalUrl}#${index === 0 ? "weather-day" : `weather-day-${index}`}`,
-                },
-            })),
+            itemListElement: visibleDaily.map((_, index) => {
+                const fragment =
+                    index === 0 ? "weather-day" : `weather-day-${index}`;
+                return {
+                    "@type": "ListItem",
+                    position: index + 1,
+                    /** URL form — many validators reject bare `{ "@id" }` for ListItem.item. */
+                    item: `${canonicalUrl}#${fragment}`,
+                };
+            }),
         },
     ];
 
