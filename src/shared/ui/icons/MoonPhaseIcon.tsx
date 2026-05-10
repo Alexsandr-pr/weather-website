@@ -2,7 +2,8 @@ import { useId, type SVGProps } from "react";
 import type { MoonPhase } from "@/shared/types/weather";
 
 type MoonPhaseIconProps = SVGProps<SVGSVGElement> & {
-    phase: MoonPhase;
+    phase?: MoonPhase;
+    value?: number;
     className?: string;
 };
 
@@ -19,30 +20,32 @@ const PHASE_VALUE: Record<MoonPhase, number> = {
 
 export function MoonPhaseIcon({
     phase,
+    value,
     className = "h-6 w-6",
     ...props
 }: MoonPhaseIconProps) {
-    const value = PHASE_VALUE[phase];
+    const v = ((value ?? PHASE_VALUE[phase ?? "new"]) % 1 + 1) % 1;
     const cx = 32;
     const cy = 32;
     const r = 28;
-    const angle = value * 2 * Math.PI;
+    const angle = v * 2 * Math.PI;
     const rx = Math.abs(r * Math.cos(angle));
-    const isWaxing = value < 0.5;
+    const isWaxing = v < 0.5;
     const outerSweep = isWaxing ? 1 : 0;
     const innerSweep =
-        value < 0.25 || value > 0.75 ? outerSweep : 1 - outerSweep;
+        v < 0.25 || v > 0.75 ? outerSweep : 1 - outerSweep;
 
     const litPath =
-        value === 0
+        v < 0.005 || v > 0.995
             ? ""
-            : value === 0.5
+            : Math.abs(v - 0.5) < 0.005
                 ? `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx} ${cy + r} A ${r} ${r} 0 1 1 ${cx} ${cy - r}`
                 : `M ${cx} ${cy - r} A ${r} ${r} 0 0 ${outerSweep} ${cx} ${cy + r} A ${rx} ${r} 0 0 ${innerSweep} ${cx} ${cy - r}`;
 
     const reactId = useId();
-    const darkId = `moon-dark-${phase}-${reactId}`;
-    const lightId = `moon-light-${phase}-${reactId}`;
+    const darkId = `moon-dark-${reactId}`;
+    const lightId = `moon-light-${reactId}`;
+    const glowId = `moon-glow-${reactId}`;
 
     return (
         <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
@@ -55,7 +58,12 @@ export function MoonPhaseIcon({
                     <stop offset="0%" stopColor="#FFFBEB" />
                     <stop offset="100%" stopColor="#FBBF24" />
                 </radialGradient>
+                <radialGradient id={glowId} cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#FBBF24" stopOpacity="0.35" />
+                    <stop offset="100%" stopColor="#FBBF24" stopOpacity="0" />
+                </radialGradient>
             </defs>
+            <circle cx={cx} cy={cy} r={r + 3} fill={`url(#${glowId})`} />
             <circle
                 cx={cx}
                 cy={cy}

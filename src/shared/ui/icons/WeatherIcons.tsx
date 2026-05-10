@@ -1,318 +1,885 @@
-import type { SVGProps } from "react";
-import type { WeatherCondition, MoonPhase } from "@/shared/types/weather";
+import { useId, type SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement> & { className?: string };
 
-export function SunIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <defs>
-        <radialGradient id="sun-grad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFE27A" />
-          <stop offset="100%" stopColor="#FFB547" />
-        </radialGradient>
-      </defs>
-      <g stroke="#F4A93A" strokeWidth="2.4" strokeLinecap="round">
-        <line x1="32" y1="6" x2="32" y2="12" />
-        <line x1="32" y1="52" x2="32" y2="58" />
-        <line x1="6" y1="32" x2="12" y2="32" />
-        <line x1="52" y1="32" x2="58" y2="32" />
-        <line x1="13" y1="13" x2="17" y2="17" />
-        <line x1="47" y1="47" x2="51" y2="51" />
-        <line x1="13" y1="51" x2="17" y2="47" />
-        <line x1="47" y1="17" x2="51" y2="13" />
-      </g>
-      <circle cx="32" cy="32" r="13" fill="url(#sun-grad)" />
-    </svg>
-  );
+function BaseSvg({
+    children,
+    className = "h-8 w-8",
+    ...rest
+}: IconProps & { children: React.ReactNode }) {
+    return (
+        <svg
+            viewBox="0 0 64 64"
+            className={className}
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            {...rest}
+        >
+            {children}
+        </svg>
+    );
 }
 
-export function PartlyCloudyIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <defs>
-        <radialGradient id="pc-sun-grad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFE27A" />
-          <stop offset="100%" stopColor="#FFB547" />
-        </radialGradient>
-        <linearGradient id="pc-cloud-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="100%" stopColor="#D6E5F5" />
-        </linearGradient>
-      </defs>
-      <g stroke="#F4A93A" strokeWidth="2" strokeLinecap="round">
-        <line x1="22" y1="6" x2="22" y2="10" />
-        <line x1="6" y1="22" x2="10" y2="22" />
-        <line x1="9" y1="9" x2="12" y2="12" />
-        <line x1="35" y1="9" x2="32" y2="12" />
-      </g>
-      <circle cx="22" cy="22" r="9" fill="url(#pc-sun-grad)" />
-      <path
-        d="M20 46c-5 0-9-3.6-9-8.5S15 29 20 29c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C49 35.4 51 38 51 41.5c0 4.7-4 8.5-9 8.5H20z"
-        fill="url(#pc-cloud-grad)"
-        stroke="#B8CCE0"
-        strokeWidth="1"
-      />
-    </svg>
-  );
+function IconDefs({ id }: { id: string }) {
+    return (
+        <defs>
+            <radialGradient id={`${id}-sun-disc`} cx="35%" cy="30%" r="75%">
+                <stop offset="0%" stopColor="#FFFAD9" />
+                <stop offset="55%" stopColor="#FFD23F" />
+                <stop offset="100%" stopColor="#F08A1C" />
+            </radialGradient>
+            <radialGradient id={`${id}-sun-glow`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#FFE27A" stopOpacity="0.55" />
+                <stop offset="70%" stopColor="#FFB547" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="#FFB547" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id={`${id}-ray`} x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#FFEB80" />
+                <stop offset="100%" stopColor="#FF9F1C" />
+            </linearGradient>
+
+            <radialGradient id={`${id}-moon`} cx="32%" cy="30%" r="75%">
+                <stop offset="0%" stopColor="#FFFAEC" />
+                <stop offset="55%" stopColor="#FBE6B0" />
+                <stop offset="100%" stopColor="#C9A55C" />
+            </radialGradient>
+            <radialGradient id={`${id}-moon-glow`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#F2EAD3" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#F2EAD3" stopOpacity="0" />
+            </radialGradient>
+
+            <linearGradient id={`${id}-cloud-day`} x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stopColor="#FFFFFF" />
+                <stop offset="55%" stopColor="#EAF1FB" />
+                <stop offset="100%" stopColor="#B7C8E0" />
+            </linearGradient>
+            <linearGradient id={`${id}-cloud-storm`} x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stopColor="#8DA0BB" />
+                <stop offset="55%" stopColor="#677994" />
+                <stop offset="100%" stopColor="#3D4A60" />
+            </linearGradient>
+            <linearGradient id={`${id}-cloud-snow`} x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stopColor="#FFFFFF" />
+                <stop offset="60%" stopColor="#E5EDF6" />
+                <stop offset="100%" stopColor="#A8BFD8" />
+            </linearGradient>
+
+            <linearGradient id={`${id}-drop`} x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stopColor="#9CDDFF" />
+                <stop offset="55%" stopColor="#3DA0F0" />
+                <stop offset="100%" stopColor="#0E60BF" />
+            </linearGradient>
+            <linearGradient id={`${id}-drop-freeze`} x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stopColor="#C9F4FF" />
+                <stop offset="55%" stopColor="#3FD3E6" />
+                <stop offset="100%" stopColor="#0F7E8F" />
+            </linearGradient>
+            <radialGradient id={`${id}-drop-shine`} cx="35%" cy="30%" r="40%">
+                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+            </radialGradient>
+
+            <linearGradient id={`${id}-flake`} x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stopColor="#FFFFFF" />
+                <stop offset="100%" stopColor="#A8D7F0" />
+            </linearGradient>
+
+            <linearGradient id={`${id}-bolt`} x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%" stopColor="#FFF176" />
+                <stop offset="50%" stopColor="#FFB300" />
+                <stop offset="100%" stopColor="#E65100" />
+            </linearGradient>
+
+            <radialGradient id={`${id}-hail`} cx="35%" cy="30%" r="65%">
+                <stop offset="0%" stopColor="#FFFFFF" />
+                <stop offset="55%" stopColor="#DDF0F9" />
+                <stop offset="100%" stopColor="#7AB7E8" />
+            </radialGradient>
+
+            <linearGradient id={`${id}-fog`} x1="0%" y1="50%" x2="100%" y2="50%">
+                <stop offset="0%" stopColor="#B7C8E0" stopOpacity="0.2" />
+                <stop offset="50%" stopColor="#7E94B3" />
+                <stop offset="100%" stopColor="#B7C8E0" stopOpacity="0.2" />
+            </linearGradient>
+
+            <filter id={`${id}-glow`} x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="1.6" result="b" />
+                <feMerge>
+                    <feMergeNode in="b" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+            <filter id={`${id}-shadow`} x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow
+                    dx="0"
+                    dy="1.2"
+                    stdDeviation="1"
+                    floodColor="#1E293B"
+                    floodOpacity="0.28"
+                />
+            </filter>
+        </defs>
+    );
 }
 
-export function CloudyIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <defs>
-        <linearGradient id="cloudy-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="100%" stopColor="#C8D8EA" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M16 44c-5 0-9-3.6-9-8.5S11 27 16 27c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C45 33.4 47 36 47 39.5c0 4.7-4 8.5-9 8.5H16z"
-        fill="#E0EAF5"
-        stroke="#B8CCE0"
-        strokeWidth="1"
-        opacity="0.7"
-      />
-      <path
-        d="M22 50c-5 0-9-3.6-9-8.5S17 33 22 33c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C51 39.4 53 42 53 45.5c0 4.7-4 8.5-9 8.5H22z"
-        fill="url(#cloudy-grad)"
-        stroke="#A6BED5"
-        strokeWidth="1"
-      />
-    </svg>
-  );
-}
-
-export function RainIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <defs>
-        <linearGradient id="rain-cloud-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#D6E5F5" />
-          <stop offset="100%" stopColor="#9DB6CF" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M20 38c-5 0-9-3.6-9-8.5S15 21 20 21c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C49 27.4 51 30 51 33.5c0 4.7-4 8.5-9 8.5H20z"
-        fill="url(#rain-cloud-grad)"
-        stroke="#7E9CB8"
-        strokeWidth="1"
-      />
-      <g fill="#4A90D9">
-        <path d="M22 46l-3 8c-.3 1 .2 2 1.2 2.2 1 .2 2-.3 2.3-1.3l2.5-7.5c.3-1-.3-2-1.3-2.2-.7-.2-1.4.2-1.7.8z" />
-        <path d="M32 46l-3 8c-.3 1 .2 2 1.2 2.2 1 .2 2-.3 2.3-1.3l2.5-7.5c.3-1-.3-2-1.3-2.2-.7-.2-1.4.2-1.7.8z" />
-        <path d="M42 46l-3 8c-.3 1 .2 2 1.2 2.2 1 .2 2-.3 2.3-1.3l2.5-7.5c.3-1-.3-2-1.3-2.2-.7-.2-1.4.2-1.7.8z" />
-      </g>
-    </svg>
-  );
-}
-
-export function ThunderstormIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <path
-        d="M20 38c-5 0-9-3.6-9-8.5S15 21 20 21c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C49 27.4 51 30 51 33.5c0 4.7-4 8.5-9 8.5H20z"
-        fill="#9DB6CF"
-        stroke="#6A87A4"
-        strokeWidth="1"
-      />
-      <path
-        d="M30 42 L24 54 L30 54 L26 62 L40 48 L34 48 L38 42 Z"
-        fill="#FFC93C"
-        stroke="#E5A82F"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-export function SnowIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <path
-        d="M20 38c-5 0-9-3.6-9-8.5S15 21 20 21c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C49 27.4 51 30 51 33.5c0 4.7-4 8.5-9 8.5H20z"
-        fill="#E0EAF5"
-        stroke="#A6BED5"
-        strokeWidth="1"
-      />
-      <g fill="#7AB7E8">
-        <circle cx="22" cy="50" r="2.5" />
-        <circle cx="32" cy="54" r="2.5" />
-        <circle cx="42" cy="50" r="2.5" />
-      </g>
-    </svg>
-  );
-}
-
-export function FogIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <path
-        d="M20 32c-5 0-9-3.6-9-8.5S15 15 20 15c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C49 21.4 51 24 51 27.5c0 4.7-4 8.5-9 8.5H20z"
-        fill="#E0EAF5"
-        stroke="#B8CCE0"
-        strokeWidth="1"
-      />
-      <g stroke="#9DB6CF" strokeWidth="3" strokeLinecap="round">
-        <line x1="10" y1="44" x2="54" y2="44" />
-        <line x1="14" y1="52" x2="50" y2="52" />
-      </g>
-    </svg>
-  );
-}
-
-export function WindyIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <g fill="none" stroke="#7AA5C6" strokeWidth="3" strokeLinecap="round">
-        <path d="M8 22 H38 a6 6 0 1 0 -6 -6" />
-        <path d="M6 34 H46 a6 6 0 1 1 -6 6" />
-        <path d="M8 46 H30 a4 4 0 1 0 -4 -4" />
-      </g>
-    </svg>
-  );
-}
-
-export function ClearNightIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <defs>
-        <radialGradient id="moon-grad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F5F7FF" />
-          <stop offset="100%" stopColor="#C5CFE8" />
-        </radialGradient>
-      </defs>
-      <path
-        d="M44 38a16 16 0 0 1-22-21 16 16 0 1 0 22 21z"
-        fill="url(#moon-grad)"
-        stroke="#9CA8C7"
-        strokeWidth="1"
-      />
-      <g fill="#FFE27A">
-        <circle cx="48" cy="14" r="1.5" />
-        <circle cx="54" cy="22" r="1.2" />
-        <circle cx="44" cy="22" r="1" />
-      </g>
-    </svg>
-  );
-}
-
-export function PartlyCloudyNightIcon({ className = "h-8 w-8", ...props }: IconProps) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" {...props}>
-      <defs>
-        <radialGradient id="pcn-moon-grad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F5F7FF" />
-          <stop offset="100%" stopColor="#C5CFE8" />
-        </radialGradient>
-        <linearGradient id="pcn-cloud-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="100%" stopColor="#D6E5F5" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M30 22a10 10 0 0 1-14-13 10 10 0 1 0 14 13z"
-        fill="url(#pcn-moon-grad)"
-        stroke="#9CA8C7"
-        strokeWidth="1"
-      />
-      <path
-        d="M20 50c-5 0-9-3.6-9-8.5S15 33 20 33c1 0 2 .2 3 .5 1.7-4.5 6-7.5 11-7.5 6.6 0 12 5 12 11 0 .5 0 1-.1 1.5C49 39.4 51 42 51 45.5c0 4.7-4 8.5-9 8.5H20z"
-        fill="url(#pcn-cloud-grad)"
-        stroke="#B8CCE0"
-        strokeWidth="1"
-      />
-    </svg>
-  );
-}
-
-const conditionIconMap: Record<WeatherCondition, (p: IconProps) => React.JSX.Element> = {
-  clear: SunIcon,
-  "partly-cloudy": PartlyCloudyIcon,
-  cloudy: CloudyIcon,
-  rain: RainIcon,
-  thunderstorm: ThunderstormIcon,
-  snow: SnowIcon,
-  fog: FogIcon,
-  windy: WindyIcon,
-};
-
-const conditionNightIconMap: Partial<
-  Record<WeatherCondition, (p: IconProps) => React.JSX.Element>
-> = {
-  clear: ClearNightIcon,
-  "partly-cloudy": PartlyCloudyNightIcon,
-};
-
-export function WeatherConditionIcon({
-  condition,
-  isNight = false,
-  className,
+function Sun({
+    id,
+    cx = 32,
+    cy = 32,
+    r = 12,
+    rays = true,
 }: {
-  condition: WeatherCondition;
-  isNight?: boolean;
-  className?: string;
+    id: string;
+    cx?: number;
+    cy?: number;
+    r?: number;
+    rays?: boolean;
 }) {
-  const Icon =
-    (isNight && conditionNightIconMap[condition]) ||
-    conditionIconMap[condition] ||
-    PartlyCloudyIcon;
-  return <Icon className={className} />;
+    const rayInner = r + 2;
+    const rayOuter = r + 8;
+    const rayHalf = 1.6;
+    return (
+        <g>
+            <circle
+                cx={cx}
+                cy={cy}
+                r={r + 11}
+                fill={`url(#${id}-sun-glow)`}
+            />
+            {rays && (
+                <g filter={`url(#${id}-glow)`}>
+                    {Array.from({ length: 8 }).map((_, i) => {
+                        const angle = (i * 45 * Math.PI) / 180;
+                        const sx = cx + Math.cos(angle) * rayInner;
+                        const sy = cy + Math.sin(angle) * rayInner;
+                        const ex = cx + Math.cos(angle) * rayOuter;
+                        const ey = cy + Math.sin(angle) * rayOuter;
+                        const px = -Math.sin(angle) * rayHalf;
+                        const py = Math.cos(angle) * rayHalf;
+                        return (
+                            <path
+                                key={i}
+                                d={`M${sx + px} ${sy + py} L${ex} ${ey} L${sx - px} ${sy - py} Z`}
+                                fill={`url(#${id}-ray)`}
+                            />
+                        );
+                    })}
+                </g>
+            )}
+            <circle
+                cx={cx}
+                cy={cy}
+                r={r}
+                fill={`url(#${id}-sun-disc)`}
+                stroke="#F08A1C"
+                strokeWidth="0.6"
+                strokeOpacity="0.4"
+            />
+            <ellipse
+                cx={cx - r * 0.35}
+                cy={cy - r * 0.45}
+                rx={r * 0.45}
+                ry={r * 0.28}
+                fill="#FFFFFF"
+                opacity="0.55"
+            />
+        </g>
+    );
 }
 
-export function MoonIcon({
-  phase,
-  className = "h-6 w-6",
+function Moon({
+    id,
+    cx = 32,
+    cy = 32,
+    r = 14,
 }: {
-  phase: MoonPhase;
-  className?: string;
+    id: string;
+    cx?: number;
+    cy?: number;
+    r?: number;
 }) {
-  const fill = "#E5ECF5";
-  const dark = "#1F2C45";
-  const phaseMap: Record<MoonPhase, React.JSX.Element> = {
-    new: <circle cx="32" cy="32" r="22" fill={dark} />,
-    "waxing-crescent": (
-      <>
-        <circle cx="32" cy="32" r="22" fill={fill} />
-        <ellipse cx="26" cy="32" rx="20" ry="22" fill={dark} />
-      </>
-    ),
-    "first-quarter": (
-      <>
-        <circle cx="32" cy="32" r="22" fill={fill} />
-        <rect x="10" y="10" width="22" height="44" fill={dark} />
-      </>
-    ),
-    "waxing-gibbous": (
-      <>
-        <circle cx="32" cy="32" r="22" fill={fill} />
-        <ellipse cx="22" cy="32" rx="14" ry="22" fill={dark} />
-      </>
-    ),
-    full: <circle cx="32" cy="32" r="22" fill={fill} />,
-    "waning-gibbous": (
-      <>
-        <circle cx="32" cy="32" r="22" fill={fill} />
-        <ellipse cx="42" cy="32" rx="14" ry="22" fill={dark} />
-      </>
-    ),
-    "last-quarter": (
-      <>
-        <circle cx="32" cy="32" r="22" fill={fill} />
-        <rect x="32" y="10" width="22" height="44" fill={dark} />
-      </>
-    ),
-    "waning-crescent": (
-      <>
-        <circle cx="32" cy="32" r="22" fill={fill} />
-        <ellipse cx="38" cy="32" rx="20" ry="22" fill={dark} />
-      </>
-    ),
-  };
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
-      {phaseMap[phase]}
-    </svg>
-  );
+    return (
+        <g>
+            <circle cx={cx} cy={cy} r={r + 9} fill={`url(#${id}-moon-glow)`} />
+            <circle
+                cx={cx}
+                cy={cy}
+                r={r}
+                fill={`url(#${id}-moon)`}
+                stroke="#B89253"
+                strokeWidth="0.6"
+                strokeOpacity="0.5"
+            />
+            <ellipse
+                cx={cx + r * 0.45}
+                cy={cy + r * 0.25}
+                rx={r * 0.55}
+                ry={r * 0.7}
+                fill="#9C7B3C"
+                opacity="0.22"
+            />
+            <circle cx={cx - r * 0.25} cy={cy - r * 0.35} r={r * 0.13} fill="#9C7B3C" opacity="0.45" />
+            <circle cx={cx + r * 0.1} cy={cy + r * 0.05} r={r * 0.18} fill="#9C7B3C" opacity="0.35" />
+            <circle cx={cx - r * 0.4} cy={cy + r * 0.3} r={r * 0.1} fill="#9C7B3C" opacity="0.4" />
+            <ellipse
+                cx={cx - r * 0.35}
+                cy={cy - r * 0.45}
+                rx={r * 0.4}
+                ry={r * 0.22}
+                fill="#FFFFFF"
+                opacity="0.5"
+            />
+        </g>
+    );
+}
+
+function Stars({ items }: { items: Array<{ x: number; y: number; r?: number }> }) {
+    return (
+        <g fill="#FFE27A">
+            {items.map((s, i) => (
+                <g key={i}>
+                    <circle cx={s.x} cy={s.y} r={s.r ?? 1.2} />
+                    <g
+                        stroke="#FFE27A"
+                        strokeWidth="0.6"
+                        strokeLinecap="round"
+                        opacity="0.7"
+                    >
+                        <line x1={s.x - 2.5} y1={s.y} x2={s.x + 2.5} y2={s.y} />
+                        <line x1={s.x} y1={s.y - 2.5} x2={s.x} y2={s.y + 2.5} />
+                    </g>
+                </g>
+            ))}
+        </g>
+    );
+}
+
+const CLOUD_BODY =
+    "M19 42c-5.3 0-9.5-3.8-9.5-8.8s4.2-8.8 9.5-8.8c1 0 2 .2 3 .5 1.7-4.7 6.2-7.7 11.5-7.7 7 0 12.5 5.3 12.5 11.7 0 .5 0 1-.1 1.5C50.4 30.8 53 33.6 53 37.3c0 4.9-4.2 8.8-9.5 8.8H19z";
+
+function Cloud({
+    id,
+    variant = "day",
+    transform,
+    opacity = 1,
+}: {
+    id: string;
+    variant?: "day" | "storm" | "snow";
+    transform?: string;
+    opacity?: number;
+}) {
+    const fill =
+        variant === "storm"
+            ? `url(#${id}-cloud-storm)`
+            : variant === "snow"
+                ? `url(#${id}-cloud-snow)`
+                : `url(#${id}-cloud-day)`;
+    const stroke =
+        variant === "storm"
+            ? "#3D4A60"
+            : variant === "snow"
+                ? "#94A8C2"
+                : "#A6BAD3";
+    return (
+        <g opacity={opacity} transform={transform} filter={`url(#${id}-shadow)`}>
+            <path d={CLOUD_BODY} fill={fill} stroke={stroke} strokeWidth="1" />
+            <path
+                d="M22 28c-1.6 0-3 .6-4 1.5 1-3.5 4.5-6 8.5-6 1.6 0 3 .4 4.4 1.1-2.5 .4-5.7 1.7-8.9 3.4z"
+                fill="#FFFFFF"
+                opacity={variant === "storm" ? 0.18 : 0.55}
+            />
+        </g>
+    );
+}
+
+function RainDrop({
+    id,
+    x,
+    y,
+    size = 1,
+    freezing = false,
+}: {
+    id: string;
+    x: number;
+    y: number;
+    size?: number;
+    freezing?: boolean;
+}) {
+    const w = 2.4 * size;
+    const h = 5.6 * size;
+    const fill = freezing ? `url(#${id}-drop-freeze)` : `url(#${id}-drop)`;
+    const stroke = freezing ? "#0F7E8F" : "#0E60BF";
+    return (
+        <g>
+            <path
+                d={`M${x} ${y} C${x + w} ${y + h * 0.55} ${x + w} ${y + h} ${x} ${y + h} C${x - w} ${y + h} ${x - w} ${y + h * 0.55} ${x} ${y}Z`}
+                fill={fill}
+                stroke={stroke}
+                strokeWidth="0.5"
+                strokeOpacity="0.5"
+            />
+            <ellipse
+                cx={x - w * 0.35}
+                cy={y + h * 0.55}
+                rx={w * 0.35}
+                ry={h * 0.18}
+                fill="#FFFFFF"
+                opacity="0.7"
+            />
+        </g>
+    );
+}
+
+function Streak({
+    id,
+    x,
+    y,
+    h = 6,
+    freezing = false,
+}: {
+    id: string;
+    x: number;
+    y: number;
+    h?: number;
+    freezing?: boolean;
+}) {
+    const fill = freezing ? `url(#${id}-drop-freeze)` : `url(#${id}-drop)`;
+    return (
+        <path
+            d={`M${x} ${y} l-${h * 0.3} ${h} q.4 1.2 ${h * 0.3 + 0.6} 1.1 q1.4 -.1 ${h * 0.3 + 0.4} -1.1 Z`}
+            fill={fill}
+            stroke={freezing ? "#0F7E8F" : "#0E60BF"}
+            strokeWidth="0.4"
+            strokeOpacity="0.4"
+        />
+    );
+}
+
+function Snowflake({
+    id,
+    x,
+    y,
+    size = 4,
+}: {
+    id: string;
+    x: number;
+    y: number;
+    size?: number;
+}) {
+    const arms = 6;
+    const r = size;
+    const branch = r * 0.45;
+    return (
+        <g
+            stroke={`url(#${id}-flake)`}
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            fill="none"
+            filter={`url(#${id}-glow)`}
+        >
+            {Array.from({ length: arms }).map((_, i) => {
+                const a = (i * 60 * Math.PI) / 180;
+                const ex = x + Math.cos(a) * r;
+                const ey = y + Math.sin(a) * r;
+                const bx1 = x + Math.cos(a) * r * 0.6 + Math.cos(a + Math.PI / 3) * branch;
+                const by1 = y + Math.sin(a) * r * 0.6 + Math.sin(a + Math.PI / 3) * branch;
+                const bx2 = x + Math.cos(a) * r * 0.6 + Math.cos(a - Math.PI / 3) * branch;
+                const by2 = y + Math.sin(a) * r * 0.6 + Math.sin(a - Math.PI / 3) * branch;
+                return (
+                    <g key={i}>
+                        <line x1={x} y1={y} x2={ex} y2={ey} />
+                        <line
+                            x1={x + Math.cos(a) * r * 0.6}
+                            y1={y + Math.sin(a) * r * 0.6}
+                            x2={bx1}
+                            y2={by1}
+                        />
+                        <line
+                            x1={x + Math.cos(a) * r * 0.6}
+                            y1={y + Math.sin(a) * r * 0.6}
+                            x2={bx2}
+                            y2={by2}
+                        />
+                    </g>
+                );
+            })}
+            <circle cx={x} cy={y} r={r * 0.16} fill="#FFFFFF" stroke="none" />
+        </g>
+    );
+}
+
+function Grain({
+    x,
+    y,
+    color = "#7AB7E8",
+}: {
+    x: number;
+    y: number;
+    color?: string;
+}) {
+    return (
+        <g>
+            <circle cx={x} cy={y} r="1.4" fill={color} />
+            <circle cx={x - 0.4} cy={y - 0.4} r="0.5" fill="#FFFFFF" opacity="0.8" />
+        </g>
+    );
+}
+
+function HailBall({
+    id,
+    x,
+    y,
+    r = 2.6,
+}: {
+    id: string;
+    x: number;
+    y: number;
+    r?: number;
+}) {
+    return (
+        <g>
+            <circle
+                cx={x}
+                cy={y}
+                r={r}
+                fill={`url(#${id}-hail)`}
+                stroke="#5C9BD5"
+                strokeWidth="0.6"
+            />
+            <circle cx={x - r * 0.35} cy={y - r * 0.35} r={r * 0.3} fill="#FFFFFF" opacity="0.85" />
+        </g>
+    );
+}
+
+function Lightning({
+    id,
+    x = 30,
+    y = 38,
+    scale = 1,
+}: {
+    id: string;
+    x?: number;
+    y?: number;
+    scale?: number;
+}) {
+    const s = scale;
+    return (
+        <g filter={`url(#${id}-glow)`}>
+            <path
+                d={`M${x} ${y} L${x - 7 * s} ${y + 12 * s} L${x - 1 * s} ${y + 12 * s} L${x - 5 * s} ${y + 22 * s} L${x + 11 * s} ${y + 6 * s} L${x + 4 * s} ${y + 6 * s} L${x + 9 * s} ${y - 1 * s} Z`}
+                fill={`url(#${id}-bolt)`}
+                stroke="#B45309"
+                strokeWidth="0.7"
+                strokeLinejoin="round"
+            />
+            <path
+                d={`M${x - 0.5 * s} ${y + 1 * s} L${x - 6 * s} ${y + 11 * s} L${x - 2 * s} ${y + 11 * s}`}
+                fill="none"
+                stroke="#FFF8DC"
+                strokeWidth="0.8"
+                strokeLinecap="round"
+                opacity="0.7"
+            />
+        </g>
+    );
+}
+
+function FogLines({ id }: { id: string }) {
+    return (
+        <g strokeLinecap="round">
+            <path
+                d="M8 44 q8 -3 16 0 q8 3 16 0 q8 -3 16 0"
+                stroke={`url(#${id}-fog)`}
+                strokeWidth="3"
+                fill="none"
+            />
+            <path
+                d="M10 51 q8 -3 16 0 q8 3 16 0 q6 -2 12 0"
+                stroke={`url(#${id}-fog)`}
+                strokeWidth="3"
+                fill="none"
+            />
+            <path
+                d="M14 58 q8 -3 16 0 q8 3 16 0"
+                stroke={`url(#${id}-fog)`}
+                strokeWidth="3"
+                fill="none"
+            />
+        </g>
+    );
+}
+
+export function ClearDayIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Sun id={id} cx={32} cy={32} r={13} />
+        </BaseSvg>
+    );
+}
+
+export function ClearNightIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Stars
+                items={[
+                    { x: 14, y: 18, r: 1.4 },
+                    { x: 52, y: 14, r: 1.6 },
+                    { x: 50, y: 42, r: 1.2 },
+                    { x: 16, y: 46, r: 1 },
+                ]}
+            />
+            <Moon id={id} cx={34} cy={32} r={14} />
+        </BaseSvg>
+    );
+}
+
+export function MainlyClearDayIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Sun id={id} cx={20} cy={22} r={9} />
+            <Cloud id={id} variant="day" transform="translate(8 8) scale(0.85)" opacity={0.95} />
+        </BaseSvg>
+    );
+}
+
+export function MainlyClearNightIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Stars items={[{ x: 50, y: 14 }, { x: 14, y: 16 }]} />
+            <Moon id={id} cx={20} cy={22} r={10} />
+            <Cloud id={id} variant="day" transform="translate(8 8) scale(0.85)" opacity={0.95} />
+        </BaseSvg>
+    );
+}
+
+export function PartlyCloudyDayIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Sun id={id} cx={20} cy={20} r={8} />
+            <Cloud id={id} variant="day" />
+        </BaseSvg>
+    );
+}
+
+export function PartlyCloudyNightIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Stars items={[{ x: 50, y: 12 }]} />
+            <Moon id={id} cx={20} cy={20} r={10} />
+            <Cloud id={id} variant="day" />
+        </BaseSvg>
+    );
+}
+
+export function OvercastIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="day" transform="translate(-6 -6) scale(0.9)" opacity={0.7} />
+            <Cloud id={id} variant="storm" transform="translate(2 4) scale(0.95)" />
+        </BaseSvg>
+    );
+}
+
+export function FogIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="day" transform="translate(0 -10)" opacity={0.85} />
+            <FogLines id={id} />
+        </BaseSvg>
+    );
+}
+
+export function RimeFogIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="snow" transform="translate(0 -10)" opacity={0.85} />
+            <FogLines id={id} />
+            <g fill="#22D3EE">
+                <circle cx="20" cy="60" r="0.9" />
+                <circle cx="32" cy="62" r="0.9" />
+                <circle cx="44" cy="60" r="0.9" />
+            </g>
+        </BaseSvg>
+    );
+}
+
+interface DrizzleProps extends IconProps {
+    intensity?: "light" | "moderate" | "dense";
+    freezing?: boolean;
+}
+
+export function DrizzleIcon({ intensity = "light", freezing = false, ...rest }: DrizzleProps) {
+    const id = useId();
+    const drops =
+        intensity === "light"
+            ? [{ x: 24, y: 48 }, { x: 38, y: 48 }]
+            : intensity === "moderate"
+                ? [{ x: 20, y: 48 }, { x: 32, y: 50 }, { x: 44, y: 48 }]
+                : [
+                    { x: 18, y: 48 },
+                    { x: 26, y: 50 },
+                    { x: 34, y: 48 },
+                    { x: 42, y: 50 },
+                    { x: 50, y: 48 },
+                ];
+    return (
+        <BaseSvg {...rest}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="storm" transform="translate(0 -2)" />
+            {drops.map((d, i) => (
+                <Streak key={i} id={id} x={d.x} y={d.y} h={5} freezing={freezing} />
+            ))}
+        </BaseSvg>
+    );
+}
+
+interface RainProps extends IconProps {
+    intensity?: "light" | "moderate" | "heavy";
+    freezing?: boolean;
+}
+
+export function RainIcon({ intensity = "moderate", freezing = false, ...rest }: RainProps) {
+    const id = useId();
+    const drops =
+        intensity === "light"
+            ? [{ x: 26, y: 48 }, { x: 40, y: 48 }]
+            : intensity === "moderate"
+                ? [{ x: 22, y: 48 }, { x: 32, y: 50 }, { x: 42, y: 48 }]
+                : [
+                    { x: 18, y: 48 },
+                    { x: 26, y: 50 },
+                    { x: 34, y: 48 },
+                    { x: 42, y: 50 },
+                    { x: 50, y: 48 },
+                ];
+    const dropSize = intensity === "heavy" ? 1.15 : 1;
+    return (
+        <BaseSvg {...rest}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="storm" transform="translate(0 -2)" />
+            {drops.map((d, i) => (
+                <RainDrop key={i} id={id} x={d.x} y={d.y} size={dropSize} freezing={freezing} />
+            ))}
+        </BaseSvg>
+    );
+}
+
+interface SnowProps extends IconProps {
+    intensity?: "light" | "moderate" | "heavy";
+}
+
+export function SnowIcon({ intensity = "moderate", ...rest }: SnowProps) {
+    const id = useId();
+    const flakes =
+        intensity === "light"
+            ? [{ x: 24, y: 52 }, { x: 40, y: 52 }]
+            : intensity === "moderate"
+                ? [{ x: 20, y: 52 }, { x: 32, y: 56 }, { x: 44, y: 52 }]
+                : [
+                    { x: 16, y: 52 },
+                    { x: 26, y: 56 },
+                    { x: 34, y: 52 },
+                    { x: 42, y: 56 },
+                    { x: 50, y: 52 },
+                ];
+    return (
+        <BaseSvg {...rest}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="snow" transform="translate(0 -2)" />
+            {flakes.map((f, i) => (
+                <Snowflake key={i} id={id} x={f.x} y={f.y} size={3.4} />
+            ))}
+        </BaseSvg>
+    );
+}
+
+export function SnowGrainsIcon(props: IconProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...props}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="snow" transform="translate(0 -2)" />
+            <Grain x={20} y={50} />
+            <Grain x={26} y={54} />
+            <Grain x={32} y={50} />
+            <Grain x={38} y={54} />
+            <Grain x={44} y={50} />
+            <Grain x={24} y={58} />
+            <Grain x={36} y={58} />
+            <Grain x={48} y={58} />
+        </BaseSvg>
+    );
+}
+
+interface RainShowersProps extends IconProps {
+    intensity?: "slight" | "moderate" | "violent";
+}
+
+export function RainShowersIcon({ intensity = "moderate", ...rest }: RainShowersProps) {
+    const id = useId();
+    const drops =
+        intensity === "slight"
+            ? [{ x: 28, y: 50 }, { x: 40, y: 50 }]
+            : intensity === "moderate"
+                ? [{ x: 22, y: 50 }, { x: 32, y: 52 }, { x: 42, y: 50 }]
+                : [
+                    { x: 18, y: 50 },
+                    { x: 26, y: 52 },
+                    { x: 34, y: 50 },
+                    { x: 42, y: 52 },
+                    { x: 50, y: 50 },
+                ];
+    const dropSize = intensity === "violent" ? 1.2 : 1;
+    return (
+        <BaseSvg {...rest}>
+            <IconDefs id={id} />
+            <Sun id={id} cx={48} cy={14} r={7} />
+            <Cloud id={id} variant="storm" transform="translate(-2 4)" />
+            {drops.map((d, i) => (
+                <RainDrop key={i} id={id} x={d.x} y={d.y} size={dropSize} />
+            ))}
+        </BaseSvg>
+    );
+}
+
+interface SnowShowersProps extends IconProps {
+    intensity?: "slight" | "heavy";
+}
+
+export function SnowShowersIcon({ intensity = "slight", ...rest }: SnowShowersProps) {
+    const id = useId();
+    const flakes =
+        intensity === "slight"
+            ? [{ x: 26, y: 54 }, { x: 40, y: 54 }]
+            : [
+                { x: 18, y: 54 },
+                { x: 28, y: 58 },
+                { x: 36, y: 54 },
+                { x: 44, y: 58 },
+                { x: 50, y: 54 },
+            ];
+    return (
+        <BaseSvg {...rest}>
+            <IconDefs id={id} />
+            <Sun id={id} cx={48} cy={14} r={7} />
+            <Cloud id={id} variant="snow" transform="translate(-2 4)" />
+            {flakes.map((f, i) => (
+                <Snowflake key={i} id={id} x={f.x} y={f.y} size={3} />
+            ))}
+        </BaseSvg>
+    );
+}
+
+interface ThunderstormProps extends IconProps {
+    hail?: "slight" | "heavy";
+}
+
+export function ThunderstormIcon({ hail, ...rest }: ThunderstormProps) {
+    const id = useId();
+    return (
+        <BaseSvg {...rest}>
+            <IconDefs id={id} />
+            <Cloud id={id} variant="storm" />
+            <Lightning id={id} x={30} y={38} scale={1} />
+            {hail === "slight" && (
+                <>
+                    <HailBall id={id} x={20} y={54} />
+                    <HailBall id={id} x={44} y={56} />
+                </>
+            )}
+            {hail === "heavy" && (
+                <>
+                    <HailBall id={id} x={18} y={52} r={2.8} />
+                    <HailBall id={id} x={26} y={58} r={2.6} />
+                    <HailBall id={id} x={42} y={52} r={2.6} />
+                    <HailBall id={id} x={50} y={58} r={2.8} />
+                </>
+            )}
+        </BaseSvg>
+    );
+}
+
+interface WeatherCodeIconProps extends IconProps {
+    code: number;
+    isNight?: boolean;
+}
+
+export function WeatherCodeIcon({ code, isNight, ...rest }: WeatherCodeIconProps) {
+    switch (code) {
+        case 0:
+            return isNight ? <ClearNightIcon {...rest} /> : <ClearDayIcon {...rest} />;
+        case 1:
+            return isNight ? <MainlyClearNightIcon {...rest} /> : <MainlyClearDayIcon {...rest} />;
+        case 2:
+            return isNight ? <PartlyCloudyNightIcon {...rest} /> : <PartlyCloudyDayIcon {...rest} />;
+        case 45:
+            return <FogIcon {...rest} />;
+        case 48:
+            return <RimeFogIcon {...rest} />;
+        case 51:
+            return <DrizzleIcon intensity="light" {...rest} />;
+        case 53:
+            return <DrizzleIcon intensity="moderate" {...rest} />;
+        case 55:
+            return <DrizzleIcon intensity="dense" {...rest} />;
+        case 56:
+            return <DrizzleIcon intensity="light" freezing {...rest} />;
+        case 57:
+            return <DrizzleIcon intensity="dense" freezing {...rest} />;
+        case 61:
+            return <RainIcon intensity="light" {...rest} />;
+        case 63:
+            return <RainIcon intensity="moderate" {...rest} />;
+        case 65:
+            return <RainIcon intensity="heavy" {...rest} />;
+        case 66:
+            return <RainIcon intensity="light" freezing {...rest} />;
+        case 67:
+            return <RainIcon intensity="heavy" freezing {...rest} />;
+        case 71:
+            return <SnowIcon intensity="light" {...rest} />;
+        case 73:
+            return <SnowIcon intensity="moderate" {...rest} />;
+        case 75:
+            return <SnowIcon intensity="heavy" {...rest} />;
+        case 77:
+            return <SnowGrainsIcon {...rest} />;
+        case 80:
+            return <RainShowersIcon intensity="slight" {...rest} />;
+        case 81:
+            return <RainShowersIcon intensity="moderate" {...rest} />;
+        case 82:
+            return <RainShowersIcon intensity="violent" {...rest} />;
+        case 85:
+            return <SnowShowersIcon intensity="slight" {...rest} />;
+        case 86:
+            return <SnowShowersIcon intensity="heavy" {...rest} />;
+        case 95:
+            return <ThunderstormIcon {...rest} />;
+        case 96:
+            return <ThunderstormIcon hail="slight" {...rest} />;
+        case 99:
+            return <ThunderstormIcon hail="heavy" {...rest} />;
+        case 3:
+        default:
+            return <OvercastIcon {...rest} />;
+    }
 }
