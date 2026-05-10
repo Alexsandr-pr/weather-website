@@ -12,8 +12,12 @@ import {
 
 const WEB_SITE_ID = `${BRAND_URL}/#website`;
 
-/** Stable @type IRI — some validators only accept full schema.org URLs. */
-const WEATHER_FORECAST_TYPE = "https://schema.org/WeatherForecast";
+/**
+ * Use `CreativeWork`, not `WeatherForecast`: many validators (e.g. Yandex) do not
+ * whitelist WeatherForecast, so ListItem.item and @type fail.
+ * Forecast-specific fields remain as on a CreativeWork (Google accepts extensions).
+ */
+const FORECAST_DAY_TYPE = "https://schema.org/CreativeWork";
 
 interface PrayerTimesPayload {
     prayers: { name: string; time: string }[];
@@ -40,15 +44,14 @@ function buildWeatherForecastNode(
     const pressureAvg = averageNumber(day.hours.map((h) => h.pressure));
 
     const node: Record<string, unknown> = {
-        "@type": WEATHER_FORECAST_TYPE,
+        "@type": FORECAST_DAY_TYPE,
         "@id": `${baseUrl}#${fragment}`,
         name: `Prévisions du ${day.date} — ${condition}`,
         description: `${condition}. Température max. ${Math.round(day.maxTemperature)} °C, min. ${Math.round(day.minTemperature)} °C. Source des données météo: Open-Meteo.`,
-        validFrom,
-        validThrough,
+        // CreativeWork temporal scope (strict vocab) — avoids unrecognized WeatherForecast-only props.
+        temporalCoverage: `${validFrom}/${validThrough}`,
         highTemperature: quantitativeCelsius(day.maxTemperature),
         lowTemperature: quantitativeCelsius(day.minTemperature),
-        /** CreativeWork / forecast: geographic focus — not `place` (invalid on WeatherForecast). */
         spatialCoverage: { "@id": placeId },
     };
 
