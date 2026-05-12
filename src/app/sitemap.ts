@@ -18,6 +18,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "daily",
             priority: 1,
         },
+        {
+            url: `${BRAND_URL}/politique-de-confidentialite`,
+            lastModified,
+            changeFrequency: "monthly",
+            priority: 0.3,
+        },
+        {
+            url: `${BRAND_URL}/conditions-utilisation`,
+            lastModified,
+            changeFrequency: "monthly",
+            priority: 0.3,
+        },
     ];
 
     for (const city of ALGERIA_CITIES) {

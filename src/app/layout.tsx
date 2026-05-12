@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { BRAND_NAME, BRAND_URL } from "@/shared/constants/brand";
@@ -7,6 +7,11 @@ import { buildSiteJsonLd } from "@/shared/seo/schema/siteGraph";
 import { Header } from "@/widgets/header";
 import { Footer } from "@/widgets/footer";
 
+export const viewport: Viewport = {
+    themeColor: "#ffffff",
+    width: "device-width",
+    initialScale: 1
+};
 export const metadata: Metadata = {
     metadataBase: new URL(BRAND_URL),
     title: {

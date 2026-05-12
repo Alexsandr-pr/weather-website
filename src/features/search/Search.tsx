@@ -46,7 +46,7 @@ export function Search() {
                     onKeyDown={onKeyDown}
                     autoComplete="off"
                     spellCheck={false}
-                    className="h-10 w-full rounded-full border border-border-default bg-surface pl-9 pr-9 text-sm text-primary shadow-sm outline-none transition placeholder:text-secondary focus:border-accent focus:ring-2 focus:ring-accent/20 sm:h-11 sm:text-[15px]"
+                    className="h-10 w-full rounded-full border border-border-default bg-surface pl-9 pr-9 text-base text-primary shadow-sm outline-none transition placeholder:text-secondary focus:border-accent focus:ring-2 focus:ring-accent/20 sm:h-11"
                 />
                 {query && (
                     <button
