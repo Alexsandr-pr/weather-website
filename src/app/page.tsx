@@ -2,6 +2,6 @@ import { MeteoPage } from "@/widgets/meteo-page";
 
 export default function Home() {
     return (
-        <MeteoPage />
-    )
+        <MeteoPage wilayaSlug="alger" citySlug="alger-centre" />
+    );
 }

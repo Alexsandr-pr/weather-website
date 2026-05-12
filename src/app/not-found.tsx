@@ -82,7 +82,7 @@ function WeatherNotFoundIllustration() {
 
 export default function NotFound() {
     return (
-        <main className="mx-auto flex w-full max-w-5xl flex-1 items-center px-3 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <main className="mx-auto flex w-full max-w-7xl flex-1 items-center px-3 py-12 sm:px-6 sm:py-16 lg:px-8">
             <div className="grid w-full items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
                 <section className="order-2 text-center lg:order-1 lg:text-left">
                     <p className="text-sm font-medium text-accent-contrast">
